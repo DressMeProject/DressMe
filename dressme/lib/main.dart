@@ -1,4 +1,4 @@
-import 'package:dressme/splash%20screen/splash.dart';
+import 'package:dressme/routes/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
