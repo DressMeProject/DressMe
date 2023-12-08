@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:dressme/main.dart';
 import 'package:dressme/mainScreens/HomeScreen.dart';
 import 'package:flutter/material.dart';
 
