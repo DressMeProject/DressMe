@@ -1,7 +1,5 @@
 import 'dart:async';
-
-import 'package:dressme/main.dart';
-import 'package:dressme/mainScreens/HomeScreen.dart';
+import 'package:dressme/routes/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class MySplashScreen extends StatefulWidget {
@@ -45,7 +43,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset("images/welcome.png"),
+              Image.asset("assets/images/welcome.png"),
               const SizedBox(
                 height: 10,
               ),
