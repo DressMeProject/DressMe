@@ -1,9 +1,5 @@
 import 'dart:async';
-<<<<<<< HEAD:dressme/lib/splash screen/splash.dart
-import 'package:dressme/mainScreens/HomeScreen.dart';
-=======
 import 'package:dressme/routes/home_screen.dart';
->>>>>>> 9ec1f74c6d3f34970d80da616026224e7dde98a8:dressme/lib/routes/splash_screen.dart
 import 'package:flutter/material.dart';
 
 class MySplashScreen extends StatefulWidget {
