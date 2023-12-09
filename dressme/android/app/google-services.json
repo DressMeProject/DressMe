@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "609938427662",
+    "project_id": "dressme-18b1b",
+    "storage_bucket": "dressme-18b1b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:609938427662:android:e96f1a95ee3bf15a26515f",
+        "android_client_info": {
+          "package_name": "com.example.dressme"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTC1w4fyzp15soIYLRdGgzNDDpou3Mk7U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
