@@ -24,7 +24,8 @@ class _LoginScreenState extends State<LoginScreen> {
           context: context,
           builder: (c) {
             return ErrorDialog(
-              message: "Lütfen mail adresinizi ve şifrenizi yazdığınızdan emin olun.",
+              message:
+                  "Lütfen mail adresinizi ve şifrenizi yazdığınızdan emin olun.",
             );
           });
     }
@@ -93,16 +94,16 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
-          // Container(
-          //   alignment: Alignment.bottomCenter,
-          //   child: Padding(
-          //     padding: EdgeInsets.all(15),
-          //     child: Image.asset(
-          //       "images/seller.png",
-          //       height: 270,
-          //     ),
-          //   ),
-          // ),
+          Container(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: EdgeInsets.all(15),
+              child: Image.asset(
+                "assets/images/login.png",
+                height: 270,
+              ),
+            ),
+          ),
           Form(
             key: _formKey,
             child: Column(
@@ -128,6 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
+                fontSize: 17,
               ),
             ),
             style: ElevatedButton.styleFrom(
