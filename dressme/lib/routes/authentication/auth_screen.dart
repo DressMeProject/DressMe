@@ -1,3 +1,5 @@
+import 'package:dressme/routes/authentication/login.dart';
+import 'package:dressme/routes/authentication/register.dart';
 import 'package:flutter/material.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -17,16 +19,17 @@ class _AuthScreenState extends State<AuthScreen> {
           automaticallyImplyLeading: false,
           flexibleSpace: Container(
             decoration: const BoxDecoration(
-                gradient: LinearGradient(
-              colors: [
-                Colors.blue,
-                Colors.purple,
-              ],
-              begin: FractionalOffset(0.0, 0.0),
-              end: FractionalOffset(1.0, 0.0),
-              stops: [0.0, 1.0],
-              tileMode: TileMode.clamp,
-            )),
+              gradient: LinearGradient(
+                colors: [
+                  Color.fromARGB(255, 207, 70, 241),
+                  Color.fromARGB(255, 72, 70, 228),
+                ],
+                begin: FractionalOffset(0.0, 0.0),
+                end: FractionalOffset(1.0, 0.0),
+                stops: [0.0, 1.0],
+                tileMode: TileMode.clamp,
+              ),
+            ),
           ),
           title: const Text(
             "DressMe",
@@ -62,11 +65,23 @@ class _AuthScreenState extends State<AuthScreen> {
         ),
         body: Container(
           decoration: const BoxDecoration(
-              gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [Colors.white38],
-          )),
+            gradient: LinearGradient(
+              colors: [
+                Color.fromARGB(255, 242, 189, 255),
+                Color.fromARGB(255, 159, 158, 254),
+              ],
+              begin: FractionalOffset(0.0, 0.0),
+              end: FractionalOffset(1.0, 0.0),
+              stops: [0.0, 1.0],
+              tileMode: TileMode.clamp,
+            ),
+          ),
+          child: const TabBarView(
+            children: [
+              LoginScreen(),
+              RegisterScreen(),
+            ],
+          ),
         ),
       ),
     );

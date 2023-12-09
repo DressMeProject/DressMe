@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:dressme/routes/auth_screen.dart';
+import 'package:dressme/routes/authentication/auth_screen.dart';
 import 'package:flutter/material.dart';
 
 class MySplashScreen extends StatefulWidget {
