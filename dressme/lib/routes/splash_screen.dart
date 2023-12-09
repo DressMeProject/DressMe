@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:dressme/routes/home_screen.dart';
+import 'package:dressme/routes/auth_screen.dart';
 import 'package:flutter/material.dart';
 
 class MySplashScreen extends StatefulWidget {
@@ -12,7 +12,7 @@ class MySplashScreen extends StatefulWidget {
 class _MySplashScreenState extends State<MySplashScreen> {
   startTimer() {
     Timer(const Duration(seconds: 3), () async {
-      Navigator.push(context, MaterialPageRoute(builder: (c) => HomeScreen()));
+      Navigator.push(context, MaterialPageRoute(builder: (c) => AuthScreen()));
     });
   }
 
