@@ -40,7 +40,8 @@ class _LoginScreenState extends State<LoginScreen> {
           context: context,
           builder: (c) {
             return ErrorDialog(
-              message: "Lütfen mail adresinizi ve şifrenizi yazdığınızdan emin olun.",
+              message:
+                  "Lütfen mail adresinizi ve şifrenizi yazdığınızdan emin olun.",
             );
           });
     }
@@ -69,7 +70,8 @@ class _LoginScreenState extends State<LoginScreen> {
           context: context,
           builder: (c) {
             return ErrorDialog(
-              message: "Kullanıcı adı sisteme kayıtlı değil. Lütfen önce kayıt olun.",
+              message:
+                  "Kullanıcı adı sisteme kayıtlı değil. Lütfen önce kayıt olun.",
             );
           });
     });
@@ -79,19 +81,28 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future readDataAndSetDataLocally(User currentUser) async {
-    await FirebaseFirestore.instance.collection("users").doc(currentUser.uid).get().then((snapshot) async {
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(currentUser.uid)
+        .get()
+        .then((snapshot) async {
       if (snapshot.exists) {
         await sharedPreferences!.setString("uid", currentUser.uid);
-        await sharedPreferences!.setString("email", snapshot.data()!["userEmail"]);
-        await sharedPreferences!.setString("name", snapshot.data()!["userName"]);
-        await sharedPreferences!.setString("photoUrl", snapshot.data()!["userAvatarUrl"]);
+        await sharedPreferences!
+            .setString("email", snapshot.data()!["userEmail"]);
+        await sharedPreferences!
+            .setString("name", snapshot.data()!["userName"]);
+        await sharedPreferences!
+            .setString("photoUrl", snapshot.data()!["userAvatarUrl"]);
 
         Navigator.pop(context);
-        Navigator.push(context, MaterialPageRoute(builder: (c) => HomeScreen()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (c) => HomeScreen()));
       } else {
         firebaseAuth.signOut();
         Navigator.pop(context);
-        Navigator.push(context, MaterialPageRoute(builder: (c) => const AuthScreen()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (c) => const AuthScreen()));
 
         showDialog(
             context: context,
