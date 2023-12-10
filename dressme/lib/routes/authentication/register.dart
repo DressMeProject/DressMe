@@ -134,11 +134,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       "sellerName": nameController.text.trim(),
       "sellerAvatarUrl": sellerImageUrl,
       "phone": phoneController.text.trim(),
-      "address": completeAddress,
       "status": "approved",
-      "earnings": 0.0,
-      "lat": position!.latitude,
-      "lng": position!.latitude,
     });
 
     sharedPreferences = await SharedPreferences.getInstance();
