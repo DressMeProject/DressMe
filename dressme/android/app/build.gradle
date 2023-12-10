@@ -64,8 +64,6 @@ flutter {
     source '../..'
 }
 
-dependencies {
-    classpath 'com.google.gms:google-services:4.3.10'
-}
+dependencies {}
 
 apply plugin: 'com.google.gms.google-services'
