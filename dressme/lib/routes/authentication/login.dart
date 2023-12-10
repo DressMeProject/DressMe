@@ -1,7 +1,13 @@
+import 'package:dressme/global/global.dart';
+import 'package:dressme/routes/authentication/auth_screen.dart';
+import 'package:dressme/routes/home_screen.dart';
 import 'package:dressme/widgets/custom_text_field.dart';
 import 'package:dressme/widgets/error_dialog.dart';
 import 'package:dressme/widgets/loading_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,6 +21,16 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    initializeSharedPreferences();
+  }
+
+  void initializeSharedPreferences() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+  }
+
   formValidation() {
     if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
       //login
@@ -24,8 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
           context: context,
           builder: (c) {
             return ErrorDialog(
-              message:
-                  "Lütfen mail adresinizi ve şifrenizi yazdığınızdan emin olun.",
+              message: "Lütfen mail adresinizi ve şifrenizi yazdığınızdan emin olun.",
             );
           });
     }
@@ -40,53 +55,54 @@ class _LoginScreenState extends State<LoginScreen> {
           );
         });
 
-    // User? currentUser;
-    // await firebaseAuth
-    //     .signInWithEmailAndPassword(
-    //   email: emailController.text.trim(),
-    //   password: passwordController.text.trim(),
-    // )
-    //     .then((auth) {
-    //   currentUser = auth.user!;
-    // }).catchError((error) {
-    //   Navigator.pop(context);
-    //   showDialog(
-    //       context: context,
-    //       builder: (c) {
-    //         return ErrorDialog(
-    //           message: "Kullanıcı adı sisteme kayıtlı değil. Lütfen önce kayıt olun.",
-    //         );
-    //       });
-    // });
-    // if (currentUser != null) {
-    //   readDataAndSetDataLocally(currentUser!);
-    // }
+    User? currentUser;
+    await firebaseAuth
+        .signInWithEmailAndPassword(
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+    )
+        .then((auth) {
+      currentUser = auth.user!;
+    }).catchError((error) {
+      Navigator.pop(context);
+      showDialog(
+          context: context,
+          builder: (c) {
+            return ErrorDialog(
+              message: "Kullanıcı adı sisteme kayıtlı değil. Lütfen önce kayıt olun.",
+            );
+          });
+    });
+    if (currentUser != null) {
+      readDataAndSetDataLocally(currentUser!);
+    }
   }
 
-  // Future readDataAndSetDataLocally(User currentUser) async {
-  //   await FirebaseFirestore.instance.collection("sellers").doc(currentUser.uid).get().then((snapshot) async {
-  //     if (snapshot.exists) {
-  //       await sharedPreferences!.setString("uid", currentUser.uid);
-  //       await sharedPreferences!.setString("email", snapshot.data()!["sellerEmail"]);
-  //       await sharedPreferences!.setString("name", snapshot.data()!["sellerName"]);
-  //       await sharedPreferences!.setString("photoUrl", snapshot.data()!["sellerAvatarUrl"]);
+  Future readDataAndSetDataLocally(User currentUser) async {
+    await FirebaseFirestore.instance.collection("users").doc(currentUser.uid).get().then((snapshot) async {
+      if (snapshot.exists) {
+        await sharedPreferences!.setString("uid", currentUser.uid);
+        await sharedPreferences!.setString("email", snapshot.data()!["userEmail"]);
+        await sharedPreferences!.setString("name", snapshot.data()!["userName"]);
+        await sharedPreferences!.setString("photoUrl", snapshot.data()!["userAvatarUrl"]);
 
-  //       Navigator.pop(context);
-  //       Navigator.push(context, MaterialPageRoute(builder: (c) => const HomeScreen()));
-  //     } else {
-  //       firebaseAuth.signOut();
-  //       Navigator.pop(context);
-  //       Navigator.push(context, MaterialPageRoute(builder: (c) => const AuthScreen()));
+        Navigator.pop(context);
+        Navigator.push(context, MaterialPageRoute(builder: (c) => HomeScreen()));
+      } else {
+        firebaseAuth.signOut();
+        Navigator.pop(context);
+        Navigator.push(context, MaterialPageRoute(builder: (c) => const AuthScreen()));
 
-  //       showDialog(
-  //           context: context,
-  //           builder: (c) {
-  //             return ErrorDialog(
-  //               message: "Kayıt Bulunamadı.",
-  //             );
-  //           });
-  //     }
-  //   });
+        showDialog(
+            context: context,
+            builder: (c) {
+              return ErrorDialog(
+                message: "Kayıt Bulunamadı.",
+              );
+            });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

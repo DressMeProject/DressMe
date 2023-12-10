@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dressme/global/global.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as fStorage;
 import 'package:flutter/material.dart';
@@ -8,7 +9,6 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../global/global.dart';
 import '../../widgets/custom_text_field.dart';
 import '../../widgets/error_dialog.dart';
 import '../../widgets/loading_dialog.dart';
@@ -34,7 +34,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Position? position;
   List<Placemark>? placeMarks;
-  String sellerImageUrl = "";
+  String userImageUrl = "";
   String completeAddress = "";
 
   Future<void> _getImage() async {
@@ -71,10 +71,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
           fStorage.UploadTask uploadTask = reference.putFile(File(imageXFile!.path));
           fStorage.TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});
           await taskSnapshot.ref.getDownloadURL().then((url) {
-            sellerImageUrl = url;
+            userImageUrl = url;
 
             //bilgileri firestore'a kaydeder
-            authenticateSellerAndSignUp();
+            authenticateUserAndSignUp();
           });
         } else {
           showDialog(
@@ -97,7 +97,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
-  void authenticateSellerAndSignUp() async {
+  void authenticateUserAndSignUp() async {
     User? currentUser;
 
     await firebaseAuth
@@ -128,11 +128,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Future saveDataToFireStore(User currentUser) async {
-    FirebaseFirestore.instance.collection("sellers").doc(currentUser.uid).set({
-      "sellerUID": currentUser.uid,
-      "sellerEmail": currentUser.email,
-      "sellerName": nameController.text.trim(),
-      "sellerAvatarUrl": sellerImageUrl,
+    FirebaseFirestore.instance.collection("users").doc(currentUser.uid).set({
+      "userUID": currentUser.uid,
+      "userEmail": currentUser.email,
+      "userName": nameController.text.trim(),
+      "userAvatarUrl": userImageUrl,
       "phone": phoneController.text.trim(),
       "status": "approved",
     });
@@ -141,7 +141,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     await sharedPreferences!.setString("uid", currentUser.uid);
     await sharedPreferences!.setString("email", currentUser.email.toString());
     await sharedPreferences!.setString("name", nameController.text.trim());
-    await sharedPreferences!.setString("photoUrl", sellerImageUrl);
+    await sharedPreferences!.setString("photoUrl", userImageUrl);
   }
 
   @override
