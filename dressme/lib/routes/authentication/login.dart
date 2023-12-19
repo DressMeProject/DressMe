@@ -1,6 +1,5 @@
 import 'package:dressme/global/global.dart';
 import 'package:dressme/routes/authentication/auth_screen.dart';
-import 'package:dressme/routes/authentication/forget_password.dart';
 import 'package:dressme/routes/home_screen.dart';
 import 'package:dressme/widgets/custom_text_field.dart';
 import 'package:dressme/widgets/error_dialog.dart';
@@ -88,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
         await sharedPreferences!.setString("photoUrl", snapshot.data()!["userAvatarUrl"]);
 
         Navigator.pop(context);
-        Navigator.push(context, MaterialPageRoute(builder: (c) => HomeScreen()));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyHomePage(title: 'Dressme')));
       } else {
         firebaseAuth.signOut();
         Navigator.pop(context);
@@ -137,23 +136,23 @@ class _LoginScreenState extends State<LoginScreen> {
                   hintText: "Şifre",
                   isObsecre: true,
                 ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ForgetPasswordMailScreen(),
-                        ),
-                      );
-                    },
-                    child: const Text(
-                      "Şifremi Unuttum",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                )
+                // Align(
+                //   alignment: Alignment.centerRight,
+                //   child: TextButton(
+                //     onPressed: () {
+                //       Navigator.push(
+                //         context,
+                //         MaterialPageRoute(
+                //           builder: (context) => ForgetPasswordMailScreen(),
+                //         ),
+                //       );
+                //     },
+                //     child: const Text(
+                //       "Şifremi Unuttum",
+                //       style: TextStyle(color: Colors.white),
+                //     ),
+                //   ),
+                // )
               ],
             ),
           ),

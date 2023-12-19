@@ -121,7 +121,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       saveDataToFireStore(currentUser!).then((value) {
         Navigator.pop(context);
         //kullanıcıyı anasayfaya yönlendirir.
-        Route newRoute = MaterialPageRoute(builder: (c) => HomeScreen());
+        Route newRoute = MaterialPageRoute(builder: (c) => RegisterScreen()); // title parametresi belirtilmedi
         Navigator.pushReplacement(context, newRoute);
       });
     }
