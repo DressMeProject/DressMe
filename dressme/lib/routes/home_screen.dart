@@ -1,7 +1,6 @@
 import 'package:dressme/routes/clothes_screen.dart';
 import 'package:dressme/routes/profile_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(MyApp());

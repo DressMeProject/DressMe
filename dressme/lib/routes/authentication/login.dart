@@ -20,11 +20,18 @@ class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  late bool rememberMe;
 
   @override
   void initState() {
     super.initState();
     initializeSharedPreferences();
+    rememberMe = false;
+
+    if (sharedPreferences != null && sharedPreferences!.containsKey("savedEmail")) {
+      emailController.text = sharedPreferences!.getString("savedEmail") ?? "";
+      rememberMe = true;
+    }
   }
 
   void initializeSharedPreferences() async {
@@ -33,6 +40,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   formValidation() {
     if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
+      if (rememberMe) {
+        sharedPreferences?.setString("savedEmail", emailController.text);
+      } else {
+        // If Remember Me is unchecked, remove the saved email
+        sharedPreferences?.remove("savedEmail");
+      }
       //login
       loginNow();
     } else {
@@ -156,6 +169,20 @@ class _LoginScreenState extends State<LoginScreen> {
               ],
             ),
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Text('Beni Hatırla'),
+              Checkbox(
+                value: rememberMe,
+                onChanged: (bool? value) {
+                  setState(() {
+                    rememberMe = value!;
+                  });
+                },
+              ),
+            ],
+          ),
           ElevatedButton(
             child: const Text(
               "Giriş Yap",
@@ -174,7 +201,7 @@ class _LoginScreenState extends State<LoginScreen> {
             },
           ),
           const SizedBox(
-            height: 30,
+            height: 10,
           ),
         ],
       ),
