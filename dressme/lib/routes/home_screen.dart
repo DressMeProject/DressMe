@@ -1,5 +1,6 @@
 import 'package:dressme/routes/clothes_screen.dart';
 import 'package:dressme/routes/profile_screen.dart';
+import 'package:dressme/routes/uploadScreen/upload_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -82,33 +83,50 @@ class _MyHomePageState extends State<MyHomePage> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Ana Sayfa',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.inventory),
-            label: 'Dolap',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: 'Ekle',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.lightbulb),
-            label: 'İpuçları',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Ayarlar',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.black,
-        onTap: _onItemTapped,
-      ),
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Ana Sayfa',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.inventory),
+              label: 'Dolap',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.add),
+              label: 'Ekle',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.lightbulb),
+              label: 'İpuçları',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'Ayarlar',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.blue,
+          unselectedItemColor: Colors.black,
+          //onTap: _onItemTapped,
+
+          onTap: (int index) {
+            // BottomNavigationBarItem'a tıklanınca yapılacak işlemleri burada gerçekleştirin
+            if (index == 1) {
+              // Ekle ikonuna tıklandığında upload_screen ekranını aç
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ClothesScreen()),
+              );
+            }
+            if (index == 2) {
+              // Ekle ikonuna tıklandığında upload_screen ekranını aç
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MenusUploadScreen()),
+              );
+            }
+          }),
     );
   }
 }

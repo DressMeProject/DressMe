@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dressme/global/global.dart';
+import 'package:dressme/routes/authentication/auth_screen.dart';
 import 'package:dressme/routes/authentication/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,8 @@ class ProfilePage extends StatelessWidget {
 
     return FutureBuilder<DocumentSnapshot>(
       future: users.doc(userId).get(),
-      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
             return Scaffold(
@@ -37,7 +39,8 @@ class ProfilePage extends StatelessWidget {
             );
           }
 
-          Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+          Map<String, dynamic> data =
+              snapshot.data!.data() as Map<String, dynamic>;
 
           return Scaffold(
             appBar: AppBar(
@@ -58,7 +61,8 @@ class ProfilePage extends StatelessWidget {
                       decoration: InputDecoration(
                         labelText: 'Telefon Numarası',
                       ),
-                      controller: TextEditingController(text: data['Telefon Numarası']),
+                      controller:
+                          TextEditingController(text: data['Telefon Numarası']),
                     ),
                     TextField(
                       decoration: InputDecoration(
@@ -78,7 +82,10 @@ class ProfilePage extends StatelessWidget {
                       onPressed: () {
                         Navigator.of(context).pop();
                         firebaseAuth.signOut().then((value) {
-                          Navigator.push(context, MaterialPageRoute(builder: (c) => const LoginScreen()));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (c) => const AuthScreen()));
                         });
                       },
                     ),
