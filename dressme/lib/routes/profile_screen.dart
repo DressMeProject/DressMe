@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dressme/global/global.dart';
 import 'package:dressme/routes/authentication/auth_screen.dart';
-import 'package:dressme/routes/authentication/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
