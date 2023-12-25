@@ -1,5 +1,5 @@
 import 'package:dressme/routes/home_screen.dart';
-import 'package:dressme/routes/uploadScreen/upload_screen.dart';
+import 'package:dressme/routes/uploadScreen/kategori_ekle.dart';
 import 'package:flutter/material.dart';
 
 class ClothesScreen extends StatelessWidget {
@@ -33,19 +33,19 @@ class ClothesScreen extends StatelessWidget {
               color: Color.fromARGB(240, 239, 231, 231)),
         ),
         centerTitle: true,
-        automaticallyImplyLeading: true,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.black87,
-          ),
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (c) => const MyHomePage(title: 'Dressme')));
-          },
-        ),
+        automaticallyImplyLeading: false,
+        // leading: IconButton(
+        //   icon: const Icon(
+        //     Icons.arrow_back,
+        //     color: Colors.black87,
+        //   ),
+        //   onPressed: () {
+        //     Navigator.push(
+        //         context,
+        //         MaterialPageRoute(
+        //             builder: (c) => const MyHomePage(title: 'Dressme')));
+        //   },
+        // ),
       ),
       body: Column(
         children: [
@@ -116,10 +116,8 @@ class ClothesScreen extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => MenusUploadScreen()),
-                );
+                // Navigator.push( context, MaterialPageRoute(builder: (context) => KategoriEkle()),
+                // );
               },
             ),
           ),

@@ -1,6 +1,6 @@
 import 'package:dressme/routes/clothes_screen.dart';
 import 'package:dressme/routes/profile_screen.dart';
-import 'package:dressme/routes/uploadScreen/upload_screen.dart';
+import 'package:dressme/routes/uploadScreen/kategori_ekle.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -34,7 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
   static List<Widget> _widgetOptions = <Widget>[
     Text('Ana Sayfa', style: TextStyle(fontSize: 24.0)),
     ClothesScreen(),
-    Text('Ekle'),
+    MenusUploadScreen(),
     Text('İpuçları'),
     Text('Ayarlar'),
   ];
@@ -49,8 +49,27 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+              gradient: LinearGradient(
+            colors: [
+              Color.fromARGB(255, 207, 70, 241),
+              Color.fromARGB(255, 72, 70, 228),
+            ],
+            begin: FractionalOffset(0.0, 0.0),
+            end: FractionalOffset(1.0, 0.0),
+            stops: [0.0, 1.0],
+            tileMode: TileMode.clamp,
+          )),
+        ),
         automaticallyImplyLeading: false,
-        title: Text(widget.title),
+        title: const Text(
+          "DressMe",
+          style: TextStyle(
+              fontSize: 30,
+              fontFamily: "Lobster",
+              color: Color.fromARGB(240, 239, 231, 231)),
+        ),
         actions: <Widget>[
           Padding(
             padding: EdgeInsets.only(right: 20.0),
@@ -58,12 +77,12 @@ class _MyHomePageState extends State<MyHomePage> {
               onTap: () {},
               child: Text(
                 'Hoşgeldin Harun',
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(fontFamily: "Varela", color: Colors.white),
               ),
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(right: 20.0),
+            padding: EdgeInsets.only(right: 15.0),
             child: GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -73,7 +92,8 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               child: Icon(
                 Icons.account_circle,
-                size: 26.0,
+                size: 28.0,
+                color: Colors.white,
               ),
             ),
           ),
@@ -83,50 +103,51 @@ class _MyHomePageState extends State<MyHomePage> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Ana Sayfa',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.inventory),
-              label: 'Dolap',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.add),
-              label: 'Ekle',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.lightbulb),
-              label: 'İpuçları',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Ayarlar',
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.blue,
-          unselectedItemColor: Colors.black,
-          //onTap: _onItemTapped,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Ana Sayfa',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.inventory),
+            label: 'Dolap',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add),
+            label: 'Ekle',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.lightbulb),
+            label: 'İpuçları',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Ayarlar',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.black,
+        onTap: _onItemTapped,
 
-          onTap: (int index) {
-            // BottomNavigationBarItem'a tıklanınca yapılacak işlemleri burada gerçekleştirin
-            if (index == 1) {
-              // Ekle ikonuna tıklandığında upload_screen ekranını aç
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ClothesScreen()),
-              );
-            }
-            if (index == 2) {
-              // Ekle ikonuna tıklandığında upload_screen ekranını aç
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MenusUploadScreen()),
-              );
-            }
-          }),
+        //onTap: (int index) {
+        // // BottomNavigationBarItem'a tıklanınca yapılacak işlemleri burada gerçekleştirin
+        // if (index == 1) {
+        //   // Ekle ikonuna tıklandığında upload_screen ekranını aç
+        //   Navigator.push(
+        //     context,
+        //     MaterialPageRoute(builder: (context) => ClothesScreen()),
+        //   );
+        // }
+        // if (index == 2) {
+        //   // Ekle ikonuna tıklandığında upload_screen ekranını aç
+        //   Navigator.push(
+        //     context,
+        //     MaterialPageRoute(builder: (context) => MenusUploadScreen()),
+        //   );
+        // }
+        //}
+      ),
     );
   }
 }

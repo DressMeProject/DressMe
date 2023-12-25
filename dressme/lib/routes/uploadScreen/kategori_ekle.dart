@@ -47,19 +47,19 @@ class _MenusUploadScreenState extends State<MenusUploadScreen> {
               color: Color.fromARGB(240, 239, 231, 231)),
         ),
         centerTitle: true,
-        automaticallyImplyLeading: true,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.black87,
-          ),
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (c) => const MyHomePage(title: 'Dressme')));
-          },
-        ),
+        automaticallyImplyLeading: false,
+        // leading: IconButton(
+        //   icon: const Icon(
+        //     Icons.arrow_back,
+        //     color: Colors.black87,
+        //   ),
+        //   onPressed: () {
+        //     Navigator.push(
+        //         context,
+        //         MaterialPageRoute(
+        //             builder: (c) => const MyHomePage(title: 'Dressme')));
+        //   },
+        // ),
       ),
       body: Container(
         child: Center(
@@ -174,8 +174,8 @@ class _MenusUploadScreenState extends State<MenusUploadScreen> {
           decoration: const BoxDecoration(
               gradient: LinearGradient(
             colors: [
-              Color(0xFFF882A6),
-              Color(0xFFFFBED7),
+              Color.fromARGB(255, 207, 70, 241),
+              Color.fromARGB(255, 72, 70, 228),
             ],
             begin: FractionalOffset(0.0, 0.0),
             end: FractionalOffset(1.0, 0.0),
@@ -239,7 +239,7 @@ class _MenusUploadScreenState extends State<MenusUploadScreen> {
           ListTile(
             leading: const Icon(
               Icons.perm_device_information,
-              color: Color(0xFFFFBED7),
+              color: Color.fromARGB(255, 89, 86, 253),
             ),
             title: Container(
               width: 250,
