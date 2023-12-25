@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dressme/global/global.dart';
-import 'package:dressme/routes/home_screen.dart';
 import 'package:dressme/widgets/error_dialog.dart';
 import 'package:dressme/widgets/progress_bar.dart';
 import 'package:flutter/material.dart';

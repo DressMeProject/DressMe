@@ -1,5 +1,3 @@
-import 'package:dressme/routes/home_screen.dart';
-import 'package:dressme/routes/uploadScreen/kategori_ekle.dart';
 import 'package:flutter/material.dart';
 
 class ClothesScreen extends StatelessWidget {
