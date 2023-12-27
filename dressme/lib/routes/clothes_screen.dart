@@ -1,3 +1,4 @@
+import 'package:dressme/routes/uploadScreen/kategori_ekle.dart';
 import 'package:flutter/material.dart';
 
 class ClothesScreen extends StatelessWidget {
@@ -25,10 +26,7 @@ class ClothesScreen extends StatelessWidget {
         ),
         title: const Text(
           "Dolabım",
-          style: TextStyle(
-              fontSize: 30,
-              fontFamily: "Lobster",
-              color: Color.fromARGB(240, 239, 231, 231)),
+          style: TextStyle(fontSize: 30, fontFamily: "Lobster", color: Color.fromARGB(240, 239, 231, 231)),
         ),
         centerTitle: true,
         automaticallyImplyLeading: false,
@@ -93,8 +91,7 @@ class ClothesScreen extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(
-                bottom: 8.0), // Yukarı kaydırmak istediğiniz mesafeyi ayarlayın
+            padding: const EdgeInsets.only(bottom: 8.0), // Yukarı kaydırmak istediğiniz mesafeyi ayarlayın
             child: ElevatedButton(
               child: const Text(
                 "Kategori Ekle",
@@ -114,8 +111,10 @@ class ClothesScreen extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                // Navigator.push( context, MaterialPageRoute(builder: (context) => KategoriEkle()),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => KategoriEkleScreen()),
+                );
               },
             ),
           ),

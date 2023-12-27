@@ -1,23 +1,25 @@
 import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dressme/global/global.dart';
-import 'package:dressme/widgets/error_dialog.dart';
-import 'package:dressme/widgets/progress_bar.dart';
+import 'package:dressme/routes/home_screen.dart';
+import 'package:firebase_storage/firebase_storage.dart' as storageRef;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart' as storageRef;
 
-class MenusUploadScreen extends StatefulWidget {
-  const MenusUploadScreen({super.key});
+import '../../global/global.dart';
+import '../../widgets/error_dialog.dart';
+import '../../widgets/progress_bar.dart';
+
+class KategoriEkleScreen extends StatefulWidget {
+  const KategoriEkleScreen({super.key});
 
   @override
-  State<MenusUploadScreen> createState() => _MenusUploadScreenState();
+  State<KategoriEkleScreen> createState() => _KategoriEkleScreenState();
 }
 
-class _MenusUploadScreenState extends State<MenusUploadScreen> {
+class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
   XFile? imageXFile;
   final ImagePicker _picker = ImagePicker();
-  TextEditingController shortInfoController = TextEditingController();
   TextEditingController titleController = TextEditingController();
   bool uploading = false;
   String uniqueIdName = DateTime.now().millisecondsSinceEpoch.toString();
@@ -39,26 +41,20 @@ class _MenusUploadScreenState extends State<MenusUploadScreen> {
           )),
         ),
         title: const Text(
-          "Yeni Parça Ekle",
-          style: TextStyle(
-              fontSize: 30,
-              fontFamily: "Lobster",
-              color: Color.fromARGB(240, 239, 231, 231)),
+          "Yeni Kategori Ekle",
+          style: TextStyle(fontSize: 30, fontFamily: "Lobster", color: Color.fromARGB(240, 239, 231, 231)),
         ),
         centerTitle: true,
         automaticallyImplyLeading: false,
-        // leading: IconButton(
-        //   icon: const Icon(
-        //     Icons.arrow_back,
-        //     color: Colors.black87,
-        //   ),
-        //   onPressed: () {
-        //     Navigator.push(
-        //         context,
-        //         MaterialPageRoute(
-        //             builder: (c) => const MyHomePage(title: 'Dressme')));
-        //   },
-        // ),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: Container(
         child: Center(
@@ -79,8 +75,7 @@ class _MenusUploadScreenState extends State<MenusUploadScreen> {
                   ),
                 ),
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                      Color.fromARGB(255, 72, 70, 228)),
+                  backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 72, 70, 228)),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -105,10 +100,7 @@ class _MenusUploadScreenState extends State<MenusUploadScreen> {
         return SimpleDialog(
           title: const Text(
             "Kategori Resmi",
-            style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontFamily: "Valera"),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontFamily: "Valera"),
           ),
           children: [
             SimpleDialogOption(
@@ -184,8 +176,7 @@ class _MenusUploadScreenState extends State<MenusUploadScreen> {
         ),
         title: const Text(
           "Kategori Ekleniyor",
-          style: TextStyle(
-              fontSize: 20, fontFamily: "Lobster", color: Colors.white),
+          style: TextStyle(fontSize: 20, fontFamily: "Lobster", color: Colors.white),
         ),
         centerTitle: true,
         automaticallyImplyLeading: true,
@@ -244,31 +235,9 @@ class _MenusUploadScreenState extends State<MenusUploadScreen> {
               width: 250,
               child: TextField(
                 style: const TextStyle(fontSize: 18, color: Colors.black),
-                controller: shortInfoController,
-                decoration: const InputDecoration(
-                  hintText: "Kategori Adı",
-                  hintStyle: TextStyle(color: Colors.black54),
-                  border: InputBorder.none,
-                ),
-              ),
-            ),
-          ),
-          const Divider(
-            color: Colors.grey,
-            thickness: 1,
-          ),
-          ListTile(
-            leading: const Icon(
-              Icons.title,
-              color: Color(0xFFFFBED7),
-            ),
-            title: Container(
-              width: 250,
-              child: TextField(
-                style: const TextStyle(fontSize: 18, color: Colors.black),
                 controller: titleController,
                 decoration: const InputDecoration(
-                  hintText: "Kategori Açıklaması",
+                  hintText: "Kategori Adı",
                   hintStyle: TextStyle(color: Colors.black54),
                   border: InputBorder.none,
                 ),
@@ -286,7 +255,6 @@ class _MenusUploadScreenState extends State<MenusUploadScreen> {
 
   clearMenuUploadForm() {
     setState(() {
-      shortInfoController.clear();
       titleController.clear();
       imageXFile = null;
     });
@@ -294,8 +262,7 @@ class _MenusUploadScreenState extends State<MenusUploadScreen> {
 
   validateUploadForm() async {
     if (imageXFile != null) {
-      if (shortInfoController.text.isNotEmpty &&
-          titleController.text.isNotEmpty) {
+      if (titleController.text.isNotEmpty) {
         setState(() {
           uploading = true;
         });
@@ -312,8 +279,7 @@ class _MenusUploadScreenState extends State<MenusUploadScreen> {
             context: context,
             builder: (c) {
               return ErrorDialog(
-                message:
-                    "Lütfen ürün adı ve ürün bilgisi kısımlarını eksiksiz doldurun.",
+                message: "Lütfen ürün adı ve ürün bilgisi kısımlarını eksiksiz doldurun.",
               );
             });
       }
@@ -329,16 +295,18 @@ class _MenusUploadScreenState extends State<MenusUploadScreen> {
   }
 
   saveInfo(String downloadUrl) {
-    final ref = FirebaseFirestore.instance
-        .collection("sellers")
-        .doc(sharedPreferences!.getString("uid"))
-        .collection("menus");
+    final userUID = sharedPreferences?.getString("uid");
+    if (sharedPreferences == null || uniqueIdName == null) {
+      print(userUID);
+      return;
+    }
+
+    final ref = FirebaseFirestore.instance.collection("users").doc(userUID).collection("categorys");
 
     ref.doc(uniqueIdName).set({
-      "menuID": uniqueIdName,
-      "sellerUID": sharedPreferences!.getString("uid"),
-      "menuInfo": shortInfoController.text.toString(),
-      "menuTitle": titleController.text.toString(),
+      "categoryID": uniqueIdName,
+      "userUID": userUID,
+      "categoryTitle": titleController.text.toString(),
       "publishedDate": DateTime.now(),
       "status": "awalible",
       "thumbnailUrl": downloadUrl,
@@ -353,11 +321,9 @@ class _MenusUploadScreenState extends State<MenusUploadScreen> {
   }
 
   uploadImage(mImageFile) async {
-    storageRef.Reference reference =
-        storageRef.FirebaseStorage.instance.ref().child("menus");
+    storageRef.Reference reference = storageRef.FirebaseStorage.instance.ref().child("categorys");
 
-    storageRef.UploadTask uploadTask =
-        reference.child(uniqueIdName + ".jpg").putFile(mImageFile);
+    storageRef.UploadTask uploadTask = reference.child(uniqueIdName + ".jpg").putFile(mImageFile);
 
     storageRef.TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});
 

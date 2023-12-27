@@ -13,8 +13,7 @@ class ProfilePage extends StatelessWidget {
 
     return FutureBuilder<DocumentSnapshot>(
       future: users.doc(userId).get(),
-      builder:
-          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
             return Scaffold(
@@ -37,13 +36,37 @@ class ProfilePage extends StatelessWidget {
               ),
             );
           }
-
-          Map<String, dynamic> data =
-              snapshot.data!.data() as Map<String, dynamic>;
-
+          Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
           return Scaffold(
             appBar: AppBar(
-              title: Text('Profil Sayfası'),
+              flexibleSpace: Container(
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                  colors: [
+                    Color.fromARGB(255, 207, 70, 241),
+                    Color.fromARGB(255, 72, 70, 228),
+                  ],
+                  begin: FractionalOffset(0.0, 0.0),
+                  end: FractionalOffset(1.0, 0.0),
+                  stops: [0.0, 1.0],
+                  tileMode: TileMode.clamp,
+                )),
+              ),
+              title: const Text(
+                "Profil",
+                style: TextStyle(fontSize: 30, fontFamily: "Lobster", color: Color.fromARGB(240, 239, 231, 231)),
+              ),
+              centerTitle: true,
+              automaticallyImplyLeading: false,
+              leading: IconButton(
+                icon: const Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
             ),
             body: SingleChildScrollView(
               child: Padding(
@@ -53,39 +76,58 @@ class ProfilePage extends StatelessWidget {
                     TextField(
                       decoration: InputDecoration(
                         labelText: 'Ad Soyad',
+                        icon: Icon(Icons.person),
                       ),
-                      controller: TextEditingController(text: data['Ad Soyad']),
+                      controller: TextEditingController(
+                        text: sharedPreferences!.getString("name")!,
+                      ),
+                      enabled: false,
                     ),
                     TextField(
                       decoration: InputDecoration(
                         labelText: 'Telefon Numarası',
+                        icon: Icon(Icons.phone),
                       ),
-                      controller:
-                          TextEditingController(text: data['Telefon Numarası']),
+                      controller: TextEditingController(text: data["phone"] ?? ''),
+                      enabled: false,
                     ),
                     TextField(
                       decoration: InputDecoration(
                         labelText: 'E-Mail',
+                        icon: Icon(Icons.email),
                       ),
-                      controller: TextEditingController(text: data['E-Mail']),
-                    ),
-                    TextField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        labelText: 'Şifre',
-                      ),
-                      // Şifre genellikle doğrudan çekilmez ve gösterilmez
+                      controller: TextEditingController(text: sharedPreferences!.getString("email")!),
+                      enabled: false,
                     ),
                     TextButton(
                       child: Text('Çıkış Yap'),
                       onPressed: () {
-                        Navigator.of(context).pop();
-                        firebaseAuth.signOut().then((value) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (c) => const AuthScreen()));
-                        });
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Çıkış Yap'),
+                              content: Text('Çıkış yapmak istediğinize emin misiniz?'),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: Text('Evet'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    firebaseAuth.signOut().then((value) {
+                                      Navigator.push(context, MaterialPageRoute(builder: (c) => const AuthScreen()));
+                                    });
+                                  },
+                                ),
+                                TextButton(
+                                  child: Text('Hayır'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
                       },
                     ),
                   ],
@@ -97,7 +139,34 @@ class ProfilePage extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text('Profil Sayfası'),
+            flexibleSpace: Container(
+              decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                colors: [
+                  Color.fromARGB(255, 207, 70, 241),
+                  Color.fromARGB(255, 72, 70, 228),
+                ],
+                begin: FractionalOffset(0.0, 0.0),
+                end: FractionalOffset(1.0, 0.0),
+                stops: [0.0, 1.0],
+                tileMode: TileMode.clamp,
+              )),
+            ),
+            title: const Text(
+              "Profil",
+              style: TextStyle(fontSize: 30, fontFamily: "Lobster", color: Color.fromARGB(240, 239, 231, 231)),
+            ),
+            centerTitle: true,
+            automaticallyImplyLeading: false,
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
           ),
           body: Center(child: CircularProgressIndicator()),
         );

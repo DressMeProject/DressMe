@@ -1,4 +1,6 @@
+import 'package:dressme/global/global.dart';
 import 'package:dressme/routes/clothes_screen.dart';
+import 'package:dressme/routes/kategori_screen.dart';
 import 'package:dressme/routes/profile_screen.dart';
 import 'package:dressme/routes/uploadScreen/kategori_ekle.dart';
 import 'package:flutter/material.dart';
@@ -34,8 +36,8 @@ class _MyHomePageState extends State<MyHomePage> {
   static List<Widget> _widgetOptions = <Widget>[
     Text('Ana Sayfa', style: TextStyle(fontSize: 24.0)),
     ClothesScreen(),
-    MenusUploadScreen(),
-    Text('İpuçları'),
+    KategoriEkleScreen(),
+    KategoriScreen(),
     Text('Ayarlar'),
   ];
 
@@ -65,10 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
         automaticallyImplyLeading: false,
         title: const Text(
           "DressMe",
-          style: TextStyle(
-              fontSize: 30,
-              fontFamily: "Lobster",
-              color: Color.fromARGB(240, 239, 231, 231)),
+          style: TextStyle(fontSize: 30, fontFamily: "Lobster", color: Color.fromARGB(240, 239, 231, 231)),
         ),
         actions: <Widget>[
           Padding(
@@ -76,13 +75,13 @@ class _MyHomePageState extends State<MyHomePage> {
             child: GestureDetector(
               onTap: () {},
               child: Text(
-                'Hoşgeldin Harun',
-                style: TextStyle(fontFamily: "Varela", color: Colors.white),
+                'Hoşgeldin ' + sharedPreferences!.getString("name")!,
+                style: TextStyle(fontSize: 17, fontFamily: "Lobster", color: Colors.white),
               ),
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(right: 15.0),
+            padding: EdgeInsets.only(right: 12.0),
             child: GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -92,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               child: Icon(
                 Icons.account_circle,
-                size: 28.0,
+                size: 30.0,
                 color: Colors.white,
               ),
             ),
