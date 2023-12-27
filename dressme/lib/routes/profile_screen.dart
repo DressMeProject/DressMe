@@ -99,8 +99,24 @@ class ProfilePage extends StatelessWidget {
                       controller: TextEditingController(text: sharedPreferences!.getString("email")!),
                       enabled: false,
                     ),
-                    TextButton(
-                      child: Text('Çıkış Yap'),
+                    ElevatedButton(
+                      child: const Text(
+                        "Çıkış Yap",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      ),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                          Color.fromARGB(255, 72, 70, 228),
+                        ),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
                       onPressed: () {
                         showDialog(
                           context: context,

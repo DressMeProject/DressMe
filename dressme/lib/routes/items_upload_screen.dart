@@ -1,25 +1,31 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart' as storageRef;
+import 'package:dressme/models/categorys.dart';
+import 'package:dressme/routes/itemsScreen.dart';
+import 'package:dressme/widgets/progress_bar%20copy.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart' as storageRef;
+import '../global/global.dart';
+import '../widgets/error_dialog.dart';
 
-import '../../global/global.dart';
-import '../../widgets/error_dialog.dart';
-import '../../widgets/progress_bar.dart';
-
-class KategoriEkleScreen extends StatefulWidget {
-  const KategoriEkleScreen({super.key});
+class ItemsUploadScreen extends StatefulWidget {
+  final Categorys? model;
+  ItemsUploadScreen({this.model});
 
   @override
-  State<KategoriEkleScreen> createState() => _KategoriEkleScreenState();
+  State<ItemsUploadScreen> createState() => _ItemsUploadScreenState();
 }
 
-class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
+class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
   XFile? imageXFile;
   final ImagePicker _picker = ImagePicker();
+
+  TextEditingController shortInfoController = TextEditingController();
   TextEditingController titleController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
+
   bool uploading = false;
   String uniqueIdName = DateTime.now().millisecondsSinceEpoch.toString();
 
@@ -40,7 +46,7 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
           )),
         ),
         title: const Text(
-          "Yeni Kategori Ekle",
+          "Yeni Parça Ekle",
           style: TextStyle(fontSize: 30, fontFamily: "Lobster", color: Color.fromARGB(240, 239, 231, 231)),
         ),
         centerTitle: true,
@@ -98,7 +104,7 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
       builder: (context) {
         return SimpleDialog(
           title: const Text(
-            "Kategori Resmi",
+            "Ürün Resmi",
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontFamily: "Valera"),
           ),
           children: [
@@ -157,7 +163,7 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
     });
   }
 
-  menusUploadFormScreen() {
+  itemsUploadFormScreen() {
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Container(
@@ -174,7 +180,7 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
           )),
         ),
         title: const Text(
-          "Kategori Ekleniyor",
+          "Parça Ekleniyor",
           style: TextStyle(fontSize: 20, fontFamily: "Lobster", color: Colors.white),
         ),
         centerTitle: true,
@@ -228,7 +234,29 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
           ListTile(
             leading: const Icon(
               Icons.perm_device_information,
-              color: Color.fromARGB(255, 89, 86, 253),
+              color: Color(0xFFFFBED7),
+            ),
+            title: Container(
+              width: 250,
+              child: TextField(
+                style: const TextStyle(fontSize: 18, color: Colors.black),
+                controller: shortInfoController,
+                decoration: const InputDecoration(
+                  hintText: "Parça Adı",
+                  hintStyle: TextStyle(color: Colors.black54),
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+          ),
+          const Divider(
+            color: Colors.grey,
+            thickness: 1,
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.title,
+              color: Color(0xFFFFBED7),
             ),
             title: Container(
               width: 250,
@@ -236,7 +264,30 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
                 style: const TextStyle(fontSize: 18, color: Colors.black),
                 controller: titleController,
                 decoration: const InputDecoration(
-                  hintText: "Kategori Adı",
+                  hintText: "Parça Açıklaması",
+                  hintStyle: TextStyle(color: Colors.black54),
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+          ),
+          const Divider(
+            color: Colors.grey,
+            thickness: 1,
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.monetization_on,
+              color: Color(0xFFFFBED7),
+            ),
+            title: Container(
+              width: 250,
+              child: TextField(
+                keyboardType: TextInputType.number,
+                style: const TextStyle(fontSize: 18, color: Colors.black),
+                controller: priceController,
+                decoration: const InputDecoration(
+                  hintText: "Parça Fiyatı",
                   hintStyle: TextStyle(color: Colors.black54),
                   border: InputBorder.none,
                 ),
@@ -254,14 +305,16 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
 
   clearMenuUploadForm() {
     setState(() {
+      shortInfoController.clear();
       titleController.clear();
+      priceController.clear();
       imageXFile = null;
     });
   }
 
   validateUploadForm() async {
     if (imageXFile != null) {
-      if (titleController.text.isNotEmpty) {
+      if (shortInfoController.text.isNotEmpty && titleController.text.isNotEmpty && priceController.text.isNotEmpty) {
         setState(() {
           uploading = true;
         });
@@ -278,7 +331,7 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
             context: context,
             builder: (c) {
               return ErrorDialog(
-                message: "Lütfen ürün adı ve ürün bilgisi kısımlarını eksiksiz doldurun.",
+                message: "Lütfen parça adı ve parça bilgisi kısımlarını eksiksiz doldurun.",
               );
             });
       }
@@ -294,33 +347,59 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
   }
 
   saveInfo(String downloadUrl) {
-    final userUID = sharedPreferences?.getString("uid");
-    if (sharedPreferences == null || uniqueIdName == null) {
-      print(userUID);
-      return;
-    }
-
-    final ref = FirebaseFirestore.instance.collection("users").doc(userUID).collection("categorys");
+    final ref = FirebaseFirestore.instance
+        .collection("users")
+        .doc(sharedPreferences!.getString("uid"))
+        .collection("categorys")
+        .doc(widget.model!.categoryID)
+        .collection("items");
 
     ref.doc(uniqueIdName).set({
-      "categoryID": uniqueIdName,
-      "userUID": userUID,
-      "categoryTitle": titleController.text.toString(),
+      "itemID": uniqueIdName,
+      "categoryID": widget.model!.categoryID,
+      "userUID": sharedPreferences!.getString("uid"),
+      "userName": sharedPreferences!.getString("name"),
+      "shortInfo": shortInfoController.text.toString(),
+      "price": int.parse(priceController.text),
+      "title": titleController.text.toString(),
       "publishedDate": DateTime.now(),
       "status": "awalible",
       "thumbnailUrl": downloadUrl,
-    });
+    }).then((value) {
+      final itemsRef = FirebaseFirestore.instance.collection("items");
 
-    clearMenuUploadForm();
-
-    setState(() {
-      uniqueIdName = DateTime.now().millisecondsSinceEpoch.toString();
-      uploading = false;
+      return itemsRef.doc(uniqueIdName).set({
+        "itemID": uniqueIdName,
+        "categoryID": widget.model!.categoryID,
+        "userUID": sharedPreferences!.getString("uid"),
+        "userName": sharedPreferences!.getString("name"),
+        "shortInfo": shortInfoController.text.toString(),
+        "price": int.parse(priceController.text),
+        "title": titleController.text.toString(),
+        "publishedDate": DateTime.now(),
+        "status": "awalible",
+        "thumbnailUrl": downloadUrl,
+      });
+    }).then((_) {
+      // Both Firestore sets are done successfully, navigate to ItemsScreen
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ItemsScreen(model: widget.model), // Replace with your screen/widget
+        ),
+      ).then((_) {
+        // Clear the form and reset the state after navigating back
+        clearMenuUploadForm();
+        setState(() {
+          uniqueIdName = DateTime.now().millisecondsSinceEpoch.toString();
+          uploading = false;
+        });
+      });
     });
   }
 
   uploadImage(mImageFile) async {
-    storageRef.Reference reference = storageRef.FirebaseStorage.instance.ref().child("categorys");
+    storageRef.Reference reference = storageRef.FirebaseStorage.instance.ref().child("items");
 
     storageRef.UploadTask uploadTask = reference.child(uniqueIdName + ".jpg").putFile(mImageFile);
 
@@ -333,6 +412,6 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return imageXFile == null ? defaultScreen() : menusUploadFormScreen();
+    return imageXFile == null ? defaultScreen() : itemsUploadFormScreen();
   }
 }

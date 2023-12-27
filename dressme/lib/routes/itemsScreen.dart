@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dressme/models/categorys.dart';
+import 'package:dressme/models/items.dart';
+import 'package:dressme/routes/items_upload_screen.dart';
 import 'package:dressme/widgets/items_design.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -56,7 +58,7 @@ class _ItemsScreenState extends State<ItemsScreen> {
             ),
             iconSize: 34,
             onPressed: () {
-              //Navigator.push(context, MaterialPageRoute(builder: (c) => ItemsUploadScreen(model: widget.model)));
+              Navigator.push(context, MaterialPageRoute(builder: (c) => ItemsUploadScreen(model: widget.model)));
             },
           ),
         ],
@@ -80,14 +82,14 @@ class _ItemsScreenState extends State<ItemsScreen> {
                       ),
                     )
                   : SliverStaggeredGrid.countBuilder(
-                      crossAxisCount: 1,
+                      crossAxisCount: 2,
                       staggeredTileBuilder: (c) => StaggeredTile.fit(1),
                       itemBuilder: (context, index) {
-                        Categorys model = Categorys.fromJson(
+                        Items model = Items.fromJson(
                           snapshot.data!.docs[index].data()! as Map<String, dynamic>,
                         );
                         return ItemsDesignWidget(
-                          //model: model,
+                          model: model,
                           context: context,
                         );
                       },
