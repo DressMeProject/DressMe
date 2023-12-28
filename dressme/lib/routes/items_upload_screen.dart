@@ -71,6 +71,29 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
                 color: Colors.grey,
                 size: 200.0,
               ),
+              // Container(
+              //   decoration: BoxDecoration(
+              //     gradient: LinearGradient(
+              //       colors: [
+              //         Color.fromARGB(255, 207, 70, 241),
+              //         Color.fromARGB(255, 72, 70, 228),
+              //       ],
+              //       begin: FractionalOffset(0.0, 0.0),
+              //       end: FractionalOffset(1.0, 0.0),
+              //       stops: [0.0, 1.0],
+              //       tileMode: TileMode.clamp,
+              //     ),
+              //     borderRadius: BorderRadius.circular(12.0),
+              //   ),
+              //   width: MediaQuery.of(context).size.width - 20,
+              //   height: 45,
+              //   child: Center(
+              //     child: Text(
+              //       "Ekle",
+              //       style: TextStyle(color: Colors.white, fontSize: 15),
+              //     ),
+              //   ),
+              // ),
               ElevatedButton(
                 child: const Text(
                   "Ekle",

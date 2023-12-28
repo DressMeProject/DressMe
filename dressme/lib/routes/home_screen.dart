@@ -35,9 +35,9 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
     Text('Ana Sayfa', style: TextStyle(fontSize: 24.0)),
-    ClothesScreen(),
-    KategoriEkleScreen(),
     KategoriScreen(),
+    KategoriEkleScreen(),
+    Text('İpucu'),
     Text('Ayarlar'),
   ];
 

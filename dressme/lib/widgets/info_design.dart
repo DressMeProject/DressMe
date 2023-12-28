@@ -56,42 +56,6 @@ class _InfoDesignWidgetState extends State<InfoDesignWidget> {
                 ),
               ),
               Positioned(
-                bottom: 5.0,
-                right: 5.0,
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.delete,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text('Kategori Sil'),
-                          content: Text('Kategoriyi silmek istediğinize emin misiniz?', style: TextStyle(color: Colors.white)),
-                          actions: <Widget>[
-                            TextButton(
-                              child: Text('Evet', style: TextStyle(color: Colors.white)),
-                              onPressed: () {
-                                deleteMenu(widget.model!.categoryID!);
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            TextButton(
-                              child: Text('Hayır', style: TextStyle(color: Colors.white)),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                ),
-              ),
-              Positioned(
                 bottom: 15.0,
                 left: 0,
                 right: 5.0,
@@ -104,6 +68,48 @@ class _InfoDesignWidgetState extends State<InfoDesignWidget> {
                       color: Color.fromARGB(255, 255, 254, 254),
                       fontSize: 22,
                       fontFamily: "Lobster",
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 9.0,
+                right: 5.0,
+                child: GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context, // Yeni oluşturduğumuz context'i kullandık
+                      builder: (BuildContext dialogContext) {
+                        return AlertDialog(
+                          title: Text('Kategori Sil'),
+                          content: Text('Kategoriyi silmek istediğinize emin misiniz?', style: TextStyle(color: Colors.black)),
+                          actions: <Widget>[
+                            TextButton(
+                              child: Text('Evet', style: TextStyle(color: Colors.black)),
+                              onPressed: () {
+                                deleteMenu(widget.model!.categoryID!);
+                                Navigator.of(dialogContext).pop();
+                              },
+                            ),
+                            TextButton(
+                              child: Text('Hayır', style: TextStyle(color: Colors.black)),
+                              onPressed: () {
+                                Navigator.of(dialogContext).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.delete,
+                      color: Colors.white,
                     ),
                   ),
                 ),
