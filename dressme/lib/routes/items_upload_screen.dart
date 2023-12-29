@@ -5,8 +5,11 @@ import 'package:dressme/models/categorys.dart';
 import 'package:dressme/routes/itemsScreen.dart';
 import 'package:dressme/widgets/progress_bar%20copy.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as storageRef;
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:palette_generator/palette_generator.dart';
+import 'package:image/image.dart' as img;
 import '../global/global.dart';
 import '../widgets/error_dialog.dart';
 
@@ -19,12 +22,19 @@ class ItemsUploadScreen extends StatefulWidget {
 }
 
 class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
+  @override
+  void initState() {
+    super.initState();
+    paletteColors = []; // Initialize paletteColors as an empty list in initState
+  }
+
   XFile? imageXFile;
   final ImagePicker _picker = ImagePicker();
 
   TextEditingController shortInfoController = TextEditingController();
   TextEditingController titleController = TextEditingController();
   TextEditingController priceController = TextEditingController();
+  TextEditingController renkController = TextEditingController();
 
   bool uploading = false;
   String uniqueIdName = DateTime.now().millisecondsSinceEpoch.toString();
@@ -71,48 +81,33 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
                 color: Colors.grey,
                 size: 200.0,
               ),
-              // Container(
-              //   decoration: BoxDecoration(
-              //     gradient: LinearGradient(
-              //       colors: [
-              //         Color.fromARGB(255, 207, 70, 241),
-              //         Color.fromARGB(255, 72, 70, 228),
-              //       ],
-              //       begin: FractionalOffset(0.0, 0.0),
-              //       end: FractionalOffset(1.0, 0.0),
-              //       stops: [0.0, 1.0],
-              //       tileMode: TileMode.clamp,
-              //     ),
-              //     borderRadius: BorderRadius.circular(12.0),
-              //   ),
-              //   width: MediaQuery.of(context).size.width - 20,
-              //   height: 45,
-              //   child: Center(
-              //     child: Text(
-              //       "Ekle",
-              //       style: TextStyle(color: Colors.white, fontSize: 15),
-              //     ),
-              //   ),
-              // ),
-              ElevatedButton(
-                child: const Text(
-                  "Ekle",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
+              InkWell(
+                onTap: () {
+                  takeImage(context);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Color.fromARGB(255, 207, 70, 241),
+                        Color.fromARGB(255, 72, 70, 228),
+                      ],
+                      begin: FractionalOffset(0.0, 0.0),
+                      end: FractionalOffset(1.0, 0.0),
+                      stops: [0.0, 1.0],
+                      tileMode: TileMode.clamp,
+                    ),
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
-                ),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 72, 70, 228)),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                  width: MediaQuery.of(context).size.width - 200,
+                  height: 45,
+                  child: Center(
+                    child: Text(
+                      "Ekle",
+                      style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                   ),
                 ),
-                onPressed: () {
-                  takeImage(context);
-                },
               ),
             ],
           ),
@@ -170,6 +165,8 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
     setState(() {
       imageXFile;
     });
+
+    await pickPaletteColors();
   }
 
   pickImageFromGallery() async {
@@ -184,6 +181,50 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
     setState(() {
       imageXFile;
     });
+
+    await pickPaletteColors();
+  }
+
+  List<Widget> buildColorCircles() {
+    return paletteColors.map((color) {
+      return Container(
+        width: 50,
+        height: 50,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: color,
+        ),
+        margin: EdgeInsets.all(5),
+      );
+    }).toList();
+  }
+
+  PaletteGenerator? paletteGenerator;
+  Color dominantColor = Colors.white;
+  late List<Color> paletteColors;
+
+  Future<void> pickPaletteColors() async {
+    if (imageXFile != null) {
+      final paletteGenerator = await PaletteGenerator.fromImageProvider(
+        FileImage(File(imageXFile!.path)),
+        //maximumColorCount: 5,
+      );
+      if (paletteGenerator.paletteColors.isNotEmpty) {
+        setState(() {
+          dominantColor = paletteGenerator.dominantColor!.color;
+          paletteColors = paletteGenerator.paletteColors.map((paletteColor) => paletteColor.color).toList();
+
+          renkController.text = '';
+          for (var color in paletteColors) {
+            final int r = color.red;
+            final int g = color.green;
+            final int b = color.blue;
+            renkController.text += '$r$g$b ';
+            print("R:$r G:$g B:$b\n");
+          }
+        });
+      }
+    }
   }
 
   itemsUploadFormScreen() {
@@ -247,6 +288,36 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
                     fit: BoxFit.contain,
                   ),
                 ),
+              ),
+            ),
+          ),
+          const Divider(
+            color: Colors.grey,
+            thickness: 1,
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.perm_device_information,
+              color: Color(0xFFFFBED7),
+            ),
+            title: Container(
+              height: 70,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: paletteColors.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: paletteColors[index],
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
           ),

@@ -78,7 +78,7 @@ class _InfoDesignWidgetState extends State<InfoDesignWidget> {
                 child: GestureDetector(
                   onTap: () {
                     showDialog(
-                      context: context, // Yeni oluşturduğumuz context'i kullandık
+                      context: context,
                       builder: (BuildContext dialogContext) {
                         return AlertDialog(
                           title: Text('Kategori Sil'),

@@ -84,7 +84,7 @@ class _ItemsDesignWidgetState extends State<ItemsDesignWidget> {
                 child: GestureDetector(
                   onTap: () {
                     showDialog(
-                      context: context, // Yeni oluşturduğumuz context'i kullandık
+                      context: context,
                       builder: (BuildContext dialogContext) {
                         return AlertDialog(
                           title: Text('Parça Sil'),

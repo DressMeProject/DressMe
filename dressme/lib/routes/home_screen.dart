@@ -1,8 +1,6 @@
 import 'package:dressme/global/global.dart';
-import 'package:dressme/routes/clothes_screen.dart';
 import 'package:dressme/routes/kategori_screen.dart';
 import 'package:dressme/routes/profile_screen.dart';
-import 'package:dressme/routes/uploadScreen/kategori_ekle.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -36,9 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
   static List<Widget> _widgetOptions = <Widget>[
     Text('Ana Sayfa', style: TextStyle(fontSize: 24.0)),
     KategoriScreen(),
-    KategoriEkleScreen(),
     Text('İpucu'),
-    Text('Ayarlar'),
   ];
 
   void _onItemTapped(int index) {
@@ -101,51 +97,44 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Ana Sayfa',
+      bottomNavigationBar: Theme(
+        data: Theme.of(context).copyWith(
+          canvasColor: Colors.transparent,
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromARGB(255, 207, 70, 241),
+                Color.fromARGB(255, 72, 70, 228),
+              ],
+              begin: FractionalOffset(0.0, 0.0),
+              end: FractionalOffset(1.0, 0.0),
+              stops: [0.0, 1.0],
+              tileMode: TileMode.clamp,
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.inventory),
-            label: 'Dolap',
+          child: BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Ana Sayfa',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.inventory),
+                label: 'Dolap',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.lightbulb),
+                label: 'İpuçları',
+              ),
+            ],
+            currentIndex: _selectedIndex,
+            selectedItemColor: Colors.black,
+            unselectedItemColor: Colors.white,
+            onTap: _onItemTapped,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: 'Ekle',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.lightbulb),
-            label: 'İpuçları',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Ayarlar',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.black,
-        onTap: _onItemTapped,
-
-        //onTap: (int index) {
-        // // BottomNavigationBarItem'a tıklanınca yapılacak işlemleri burada gerçekleştirin
-        // if (index == 1) {
-        //   // Ekle ikonuna tıklandığında upload_screen ekranını aç
-        //   Navigator.push(
-        //     context,
-        //     MaterialPageRoute(builder: (context) => ClothesScreen()),
-        //   );
-        // }
-        // if (index == 2) {
-        //   // Ekle ikonuna tıklandığında upload_screen ekranını aç
-        //   Navigator.push(
-        //     context,
-        //     MaterialPageRoute(builder: (context) => MenusUploadScreen()),
-        //   );
-        // }
-        //}
+        ),
       ),
     );
   }

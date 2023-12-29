@@ -41,16 +41,17 @@ class ProfilePage extends StatelessWidget {
             appBar: AppBar(
               flexibleSpace: Container(
                 decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                  colors: [
-                    Color.fromARGB(255, 207, 70, 241),
-                    Color.fromARGB(255, 72, 70, 228),
-                  ],
-                  begin: FractionalOffset(0.0, 0.0),
-                  end: FractionalOffset(1.0, 0.0),
-                  stops: [0.0, 1.0],
-                  tileMode: TileMode.clamp,
-                )),
+                  gradient: LinearGradient(
+                    colors: [
+                      Color.fromARGB(255, 207, 70, 241),
+                      Color.fromARGB(255, 72, 70, 228),
+                    ],
+                    begin: FractionalOffset(0.0, 0.0),
+                    end: FractionalOffset(1.0, 0.0),
+                    stops: [0.0, 1.0],
+                    tileMode: TileMode.clamp,
+                  ),
+                ),
               ),
               title: const Text(
                 "Profil",
@@ -68,87 +69,133 @@ class ProfilePage extends StatelessWidget {
                 },
               ),
             ),
-            body: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: <Widget>[
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Ad Soyad',
-                        icon: Icon(Icons.person),
-                      ),
-                      controller: TextEditingController(
-                        text: sharedPreferences!.getString("name")!,
-                      ),
-                      enabled: false,
-                    ),
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Telefon Numarası',
-                        icon: Icon(Icons.phone),
-                      ),
-                      controller: TextEditingController(text: data["phone"] ?? ''),
-                      enabled: false,
-                    ),
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: 'E-Mail',
-                        icon: Icon(Icons.email),
-                      ),
-                      controller: TextEditingController(text: sharedPreferences!.getString("email")!),
-                      enabled: false,
-                    ),
-                    ElevatedButton(
-                      child: const Text(
-                        "Çıkış Yap",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                        ),
-                      ),
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                          Color.fromARGB(255, 72, 70, 228),
-                        ),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+            body: Column(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.only(top: 25, bottom: 10),
+                  child: Column(
+                    children: [
+                      Material(
+                        borderRadius: const BorderRadius.all(Radius.circular(80)),
+                        elevation: 10,
+                        child: Padding(
+                          padding: const EdgeInsets.all(1.0),
+                          child: Container(
+                            height: 150,
+                            width: 150,
+                            child: CircleAvatar(
+                              backgroundImage: NetworkImage(
+                                sharedPreferences!.getString("photoUrl")!,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('Çıkış Yap'),
-                              content: Text('Çıkış yapmak istediğinize emin misiniz?'),
-                              actions: <Widget>[
-                                TextButton(
-                                  child: Text('Evet'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                    firebaseAuth.signOut().then((value) {
-                                      Navigator.push(context, MaterialPageRoute(builder: (c) => const AuthScreen()));
-                                    });
-                                  },
-                                ),
-                                TextButton(
-                                  child: Text('Hayır'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ],
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        sharedPreferences!.getString("name")!,
+                        style: TextStyle(color: Colors.black, fontSize: 24, fontFamily: "Train"),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        children: <Widget>[
+                          TextField(
+                            decoration: InputDecoration(
+                              labelText: 'Ad Soyad',
+                              icon: Icon(Icons.person),
+                            ),
+                            controller: TextEditingController(
+                              text: sharedPreferences!.getString("name")!,
+                            ),
+                            enabled: false,
+                          ),
+                          TextField(
+                            decoration: InputDecoration(
+                              labelText: 'Telefon Numarası',
+                              icon: Icon(Icons.phone),
+                            ),
+                            controller: TextEditingController(text: data["phone"] ?? ''),
+                            enabled: false,
+                          ),
+                          TextField(
+                            decoration: InputDecoration(
+                              labelText: 'E-Mail',
+                              icon: Icon(Icons.email),
+                            ),
+                            controller: TextEditingController(text: sharedPreferences!.getString("email")!),
+                            enabled: false,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(16.0),
+                  child: InkWell(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('Çıkış Yap'),
+                            content: Text('Çıkış yapmak istediğinize emin misiniz?'),
+                            actions: <Widget>[
+                              TextButton(
+                                child: Text('Evet'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  firebaseAuth.signOut().then((value) {
+                                    Navigator.push(context, MaterialPageRoute(builder: (c) => const AuthScreen()));
+                                  });
+                                },
+                              ),
+                              TextButton(
+                                child: Text('Hayır'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Color.fromARGB(255, 207, 70, 241),
+                            Color.fromARGB(255, 72, 70, 228),
+                          ],
+                          begin: FractionalOffset(0.0, 0.0),
+                          end: FractionalOffset(1.0, 0.0),
+                          stops: [0.0, 1.0],
+                          tileMode: TileMode.clamp,
+                        ),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      height: 45,
+                      child: Center(
+                        child: Text(
+                          "Çıkış Yap",
+                          style: TextStyle(color: Colors.white, fontSize: 18),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           );
         }
@@ -157,16 +204,17 @@ class ProfilePage extends StatelessWidget {
           appBar: AppBar(
             flexibleSpace: Container(
               decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                colors: [
-                  Color.fromARGB(255, 207, 70, 241),
-                  Color.fromARGB(255, 72, 70, 228),
-                ],
-                begin: FractionalOffset(0.0, 0.0),
-                end: FractionalOffset(1.0, 0.0),
-                stops: [0.0, 1.0],
-                tileMode: TileMode.clamp,
-              )),
+                gradient: LinearGradient(
+                  colors: [
+                    Color.fromARGB(255, 207, 70, 241),
+                    Color.fromARGB(255, 72, 70, 228),
+                  ],
+                  begin: FractionalOffset(0.0, 0.0),
+                  end: FractionalOffset(1.0, 0.0),
+                  stops: [0.0, 1.0],
+                  tileMode: TileMode.clamp,
+                ),
+              ),
             ),
             title: const Text(
               "Profil",
