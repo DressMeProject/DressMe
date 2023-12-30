@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dressme/models/categorys.dart';
-import 'package:dressme/routes/itemsScreen.dart';
+import 'package:dressme/routes/items_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -19,7 +19,6 @@ class InfoDesignWidget extends StatefulWidget {
 class _InfoDesignWidgetState extends State<InfoDesignWidget> {
   deleteMenu(String categoryID) {
     FirebaseFirestore.instance.collection("users").doc(sharedPreferences!.getString("uid")).collection("categorys").doc(categoryID).delete();
-
     Fluttertoast.showToast(msg: "Kategori Silindi");
   }
 
@@ -50,17 +49,19 @@ class _InfoDesignWidgetState extends State<InfoDesignWidget> {
                 borderRadius: BorderRadius.circular(15.0),
                 child: Image.network(
                   widget.model!.thumbnailUrl!,
-                  height: 230.0,
-                  width: MediaQuery.of(context).size.width,
                   fit: BoxFit.cover,
                 ),
               ),
               Positioned(
                 bottom: 15.0,
                 left: 0,
-                right: 5.0,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                right: 50.0,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15.0),
+                    color: Color.fromARGB(255, 114, 114, 114).withOpacity(0.7),
+                  ),
                   child: Text(
                     widget.model!.categoryTitle!,
                     textAlign: TextAlign.center,
@@ -105,6 +106,7 @@ class _InfoDesignWidgetState extends State<InfoDesignWidget> {
                   child: Container(
                     padding: EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 114, 114, 114).withOpacity(0.7),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(

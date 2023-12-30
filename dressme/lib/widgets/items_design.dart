@@ -26,6 +26,7 @@ class _ItemsDesignWidgetState extends State<ItemsDesignWidget> {
         .doc(itemID)
         .delete();
 
+    FirebaseFirestore.instance.collection("items").doc(itemID).delete();
     Fluttertoast.showToast(msg: "Parça Silindi");
   }
 
@@ -56,19 +57,23 @@ class _ItemsDesignWidgetState extends State<ItemsDesignWidget> {
                 borderRadius: BorderRadius.circular(15.0),
                 child: Image.network(
                   widget.model!.thumbnailUrl!,
-                  height: 230.0,
-                  width: MediaQuery.of(context).size.width,
+                  // height: 230.0,
+                  // width: MediaQuery.of(context).size.width,
                   fit: BoxFit.cover,
                 ),
               ),
               Positioned(
                 bottom: 15.0,
                 left: 0,
-                right: 5.0,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                right: 50.0,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15.0),
+                    color: Color.fromARGB(255, 114, 114, 114).withOpacity(0.7),
+                  ),
                   child: Text(
-                    widget.model!.shortInfo!,
+                    widget.model!.title!,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       color: Color.fromARGB(255, 255, 254, 254),
@@ -111,6 +116,7 @@ class _ItemsDesignWidgetState extends State<ItemsDesignWidget> {
                   child: Container(
                     padding: EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 114, 114, 114).withOpacity(0.7),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(

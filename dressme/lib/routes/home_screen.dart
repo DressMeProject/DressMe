@@ -1,5 +1,5 @@
 import 'package:dressme/global/global.dart';
-import 'package:dressme/routes/kategori_screen.dart';
+import 'package:dressme/routes/category_screen.dart';
 import 'package:dressme/routes/profile_screen.dart';
 import 'package:flutter/material.dart';
 

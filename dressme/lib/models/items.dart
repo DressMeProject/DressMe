@@ -9,7 +9,9 @@ class Items {
   Timestamp? publishedDate;
   String? thumbnailUrl;
   String? status;
-  int? price;
+  String? colorRGB;
+  String? season;
+  String? clothes;
 
   Items({
     this.categoryID,
@@ -20,6 +22,9 @@ class Items {
     this.publishedDate,
     this.thumbnailUrl,
     this.status,
+    this.colorRGB,
+    this.season,
+    this.clothes,
   });
 
   Items.fromJson(Map<String, dynamic> json) {
@@ -31,7 +36,9 @@ class Items {
     publishedDate = json['publishedDate'];
     thumbnailUrl = json['thumbnailUrl'];
     status = json['status'];
-    price = json['price'];
+    colorRGB = json['colorRGB'];
+    season = json['season'];
+    clothes = json['clothes'];
   }
 
   Map<String, dynamic> toJson() {
@@ -41,7 +48,9 @@ class Items {
     data['itemID'] = itemID;
     data['title'] = title;
     data['shortInfo'] = shortInfo;
-    data['price'] = price;
+    data['colorRGB'] = colorRGB;
+    data['season'] = season;
+    data['clothes'] = clothes;
     data['publishedDate'] = publishedDate;
     data['thumbnailUrl'] = thumbnailUrl;
     data['status'] = status;

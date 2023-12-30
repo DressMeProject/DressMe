@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dressme/models/categorys.dart';
-import 'package:dressme/routes/itemsScreen.dart';
+import 'package:dressme/routes/items_screen.dart';
 import 'package:dressme/widgets/progress_bar%20copy.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart' as storageRef;
@@ -22,22 +22,128 @@ class ItemsUploadScreen extends StatefulWidget {
 }
 
 class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
+  List<String> selectedSeasons = [];
+  List<String> selectedClothes = [];
   @override
   void initState() {
     super.initState();
-    paletteColors = []; // Initialize paletteColors as an empty list in initState
+    paletteColors = [];
   }
 
   XFile? imageXFile;
   final ImagePicker _picker = ImagePicker();
 
-  TextEditingController shortInfoController = TextEditingController();
   TextEditingController titleController = TextEditingController();
-  TextEditingController priceController = TextEditingController();
+  TextEditingController shortInfoController = TextEditingController();
   TextEditingController renkController = TextEditingController();
 
   bool uploading = false;
   String uniqueIdName = DateTime.now().millisecondsSinceEpoch.toString();
+
+  Widget mevsimButton(String metin, IconData icon, VoidCallback onPressed) {
+    Widget iconWidget = Icon(icon); // Varsayılan olarak icon kullanılıyor
+    if (metin == 'Sonbahar') {
+      // Eğer Sonbahar ise, özel bir resim kullanabilirsiniz
+      iconWidget = Image.asset(
+        'assets/images/sonbahar.png', // Resminizin yolunu buraya girin
+        width: 24,
+        height: 24,
+      );
+    }
+    return Column(
+      children: [
+        ElevatedButton(
+          onPressed: () {
+            setState(() {
+              if (selectedSeasons.contains(metin)) {
+                selectedSeasons.remove(metin);
+              } else {
+                selectedSeasons.add(metin);
+              }
+            });
+            onPressed();
+          },
+          child: iconWidget,
+          style: ElevatedButton.styleFrom(
+            shape: CircleBorder(),
+            padding: EdgeInsets.all(10),
+            primary: selectedSeasons.contains(metin) ? Colors.blue : Colors.transparent,
+            onPrimary: Colors.black,
+          ),
+        ),
+        SizedBox(height: 3),
+        Text(metin),
+      ],
+    );
+  }
+
+  Widget GiyimButton(String metin, IconData icon, VoidCallback onPressed) {
+    Widget iconWidget = Icon(icon);
+    if (metin == 'Üst Giyim') {
+      iconWidget = Image.asset(
+        'assets/images/ustgiyim.png',
+        width: 24,
+        height: 24,
+      );
+    }
+    if (metin == 'Alt Giyim') {
+      iconWidget = Image.asset(
+        'assets/images/altgiyim.png',
+        width: 24,
+        height: 24,
+      );
+    }
+    if (metin == 'Dış Giyim') {
+      iconWidget = Image.asset(
+        'assets/images/disgiyim.png',
+        width: 24,
+        height: 24,
+      );
+    }
+    if (metin == 'Aksesuar') {
+      iconWidget = Image.asset(
+        'assets/images/aksesuar.png',
+        width: 24,
+        height: 24,
+      );
+    }
+    if (metin == 'Ayakkabı') {
+      iconWidget = Image.asset(
+        'assets/images/ayakkabi.png',
+        width: 24,
+        height: 24,
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0), // Dikey yönde boşluk ekleme
+      child: Column(
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                if (selectedClothes.contains(metin)) {
+                  selectedClothes.clear();
+                } else {
+                  selectedClothes = [metin];
+                }
+              });
+              onPressed();
+            },
+            child: iconWidget,
+            style: ElevatedButton.styleFrom(
+              shape: CircleBorder(),
+              padding: EdgeInsets.all(10),
+              primary: selectedClothes.contains(metin) ? Colors.blue : Colors.transparent,
+              onPrimary: Colors.black,
+            ),
+          ),
+          SizedBox(height: 3), // Düğme ile metin arasında boşluk bırakma
+          Text(metin),
+        ],
+      ),
+    );
+  }
 
   defaultScreen() {
     return Scaffold(
@@ -220,11 +326,49 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
             final int g = color.green;
             final int b = color.blue;
             renkController.text += '$r$g$b ';
-            print("R:$r G:$g B:$b\n");
           }
         });
       }
     }
+  }
+
+  Color? selectedColor; // Seçilen rengi izlemek için
+  String getRGBValues(Color color) {
+    final int r = color.red;
+    final int g = color.green;
+    final int b = color.blue;
+    return '$r,$g,$b'; // Rengin RGB değerlerini virgülle ayrılmış bir şekilde döndürür
+  }
+
+// Seçilebilir renk dairelerini oluşturan metod
+  List<Widget> buildSelectableColorCircles() {
+    return paletteColors.map((color) {
+      bool isSelected = selectedColor == color;
+
+      return GestureDetector(
+        onTap: () {
+          setState(() {
+            selectedColor = isSelected ? null : color;
+            if (selectedColor != null) {
+              final String rgbValues = getRGBValues(color);
+              renkController.text = rgbValues;
+            } else {
+              renkController.text = '';
+            }
+          });
+        },
+        child: Container(
+          width: 50,
+          height: 50,
+          margin: EdgeInsets.all(3),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: color,
+            border: isSelected ? Border.all(color: Color.fromARGB(255, 238, 91, 91), width: 2) : null,
+          ),
+        ),
+      );
+    }).toList();
   }
 
   itemsUploadFormScreen() {
@@ -295,29 +439,16 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
             color: Colors.grey,
             thickness: 1,
           ),
+          // Renk dairelerini göstereceğimiz alan
           ListTile(
             leading: const Icon(
               Icons.perm_device_information,
               color: Color(0xFFFFBED7),
             ),
-            title: Container(
-              height: 70,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: paletteColors.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: paletteColors[index],
-                      ),
-                    ),
-                  );
-                },
+            title: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: buildSelectableColorCircles(), // Seçilebilir renk dairelerini burada gösteriyoruz
               ),
             ),
           ),
@@ -334,7 +465,7 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
               width: 250,
               child: TextField(
                 style: const TextStyle(fontSize: 18, color: Colors.black),
-                controller: shortInfoController,
+                controller: titleController,
                 decoration: const InputDecoration(
                   hintText: "Parça Adı",
                   hintStyle: TextStyle(color: Colors.black54),
@@ -356,7 +487,7 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
               width: 250,
               child: TextField(
                 style: const TextStyle(fontSize: 18, color: Colors.black),
-                controller: titleController,
+                controller: shortInfoController,
                 decoration: const InputDecoration(
                   hintText: "Parça Açıklaması",
                   hintStyle: TextStyle(color: Colors.black54),
@@ -370,27 +501,42 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
             thickness: 1,
           ),
           ListTile(
-            leading: const Icon(
-              Icons.monetization_on,
+            // Mevsim butonları
+            leading: Icon(
+              Icons.perm_device_information,
               color: Color(0xFFFFBED7),
             ),
-            title: Container(
-              width: 250,
-              child: TextField(
-                keyboardType: TextInputType.number,
-                style: const TextStyle(fontSize: 18, color: Colors.black),
-                controller: priceController,
-                decoration: const InputDecoration(
-                  hintText: "Parça Fiyatı",
-                  hintStyle: TextStyle(color: Colors.black54),
-                  border: InputBorder.none,
-                ),
-              ),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                mevsimButton('İlkbahar', Icons.wb_sunny, () {}),
+                mevsimButton('Yaz', Icons.beach_access, () {}),
+                mevsimButton('Sonbahar', Icons.image, () {}),
+                mevsimButton('Kış', Icons.ac_unit, () {}),
+              ],
             ),
           ),
           const Divider(
             color: Colors.grey,
             thickness: 1,
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.perm_device_information,
+              color: Color(0xFFFFBED7),
+            ),
+            title: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  GiyimButton('Üst Giyim', Icons.image, () {}),
+                  GiyimButton('Alt Giyim', Icons.image, () {}),
+                  GiyimButton('Dış Giyim', Icons.image, () {}),
+                  GiyimButton('Aksesuar', Icons.image, () {}),
+                  GiyimButton('Ayakkabı', Icons.image, () {}),
+                ],
+              ),
+            ),
           ),
         ],
       ),
@@ -401,46 +547,58 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
     setState(() {
       shortInfoController.clear();
       titleController.clear();
-      priceController.clear();
       imageXFile = null;
     });
   }
 
   validateUploadForm() async {
-    if (imageXFile != null) {
-      if (shortInfoController.text.isNotEmpty && titleController.text.isNotEmpty && priceController.text.isNotEmpty) {
-        setState(() {
-          uploading = true;
-        });
+    if (imageXFile == null || selectedColor == null || titleController.text.isEmpty || selectedSeasons.isEmpty || selectedClothes.isEmpty) {
+      String errorMessage = "Lütfen ";
 
-        //resim yükleme
+      if (imageXFile == null)
+        errorMessage += "bir resim seçin";
+      else if (selectedColor == null)
+        errorMessage += "bir renk seçin";
+      else if (titleController.text.isEmpty)
+        errorMessage += "parça adını doldurun";
+      else if (selectedSeasons.isEmpty)
+        errorMessage += "en az bir mevsim seçin";
+      else if (selectedClothes.isEmpty) errorMessage += "en az bir giyim türü seçin";
 
-        String downloadUrl = await uploadImage(File(imageXFile!.path));
-
-        // bilgileri firebase'e ekleme
-
-        saveInfo(downloadUrl);
-      } else {
-        showDialog(
-            context: context,
-            builder: (c) {
-              return ErrorDialog(
-                message: "Lütfen parça adı ve parça bilgisi kısımlarını eksiksiz doldurun.",
-              );
-            });
-      }
-    } else {
       showDialog(
-          context: context,
-          builder: (c) {
-            return ErrorDialog(
-              message: "Lütfen bir resim ekleyin.",
-            );
-          });
+        context: context,
+        builder: (c) {
+          return ErrorDialog(
+            message: errorMessage,
+          );
+        },
+      );
+    } else {
+      setState(() {
+        uploading = true;
+      });
+
+      //resim yükleme
+      String downloadUrl = await uploadImage(File(imageXFile!.path));
+
+      // Seçilen mevsimler listesini bir dizeye dönüştür
+      String selectedSeasonsString = selectedSeasons.join(', ');
+
+      // Seçilen mevsimler listesini bir dizeye dönüştür
+      String selectedClothesString = selectedClothes.join('');
+
+      // Seçilen rengin RGB değerlerini alın
+      final int r = selectedColor!.red;
+      final int g = selectedColor!.green;
+      final int b = selectedColor!.blue;
+
+      // Firebase'e renk RGB değerlerini ekleyin
+      saveInfo(downloadUrl, "$r,$g,$b", selectedSeasonsString, selectedClothesString);
     }
   }
 
-  saveInfo(String downloadUrl) {
+  saveInfo(String downloadUrl, String rgbValues, String season, String clothes) {
+    // RGB değerlerini virgülle ayrılmış bir dize olarak birleştirme
     final ref = FirebaseFirestore.instance
         .collection("users")
         .doc(sharedPreferences!.getString("uid"))
@@ -454,7 +612,9 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
       "userUID": sharedPreferences!.getString("uid"),
       "userName": sharedPreferences!.getString("name"),
       "shortInfo": shortInfoController.text.toString(),
-      "price": int.parse(priceController.text),
+      "colorRGB": rgbValues,
+      "season": season,
+      "clothes": clothes,
       "title": titleController.text.toString(),
       "publishedDate": DateTime.now(),
       "status": "awalible",
@@ -468,7 +628,9 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
         "userUID": sharedPreferences!.getString("uid"),
         "userName": sharedPreferences!.getString("name"),
         "shortInfo": shortInfoController.text.toString(),
-        "price": int.parse(priceController.text),
+        "colorRGB": rgbValues, // Firebase'e renk değerini ekleyin
+        "season": season,
+        "clothes": clothes,
         "title": titleController.text.toString(),
         "publishedDate": DateTime.now(),
         "status": "awalible",

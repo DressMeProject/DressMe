@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dressme/models/categorys.dart';
 import 'package:dressme/models/items.dart';
-import 'package:dressme/routes/itemsScreen.dart';
+import 'package:dressme/routes/items_screen.dart';
 import 'package:dressme/widgets/items_design.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -115,13 +115,6 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                 widget.model!.title.toString(),
                 textAlign: TextAlign.justify,
                 style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 14),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                widget.model!.price.toString() + " ₺",
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
               ),
             ),
             const SizedBox(

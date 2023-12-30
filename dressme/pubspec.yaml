@@ -42,6 +42,7 @@ flutter:
     - assets/images/
     - assets/images/kiyafet.png
     - assets/images/kiyafet2.png
+    - assets/images/sonbahar.png
   fonts:
     - family: Lobster
       fonts:

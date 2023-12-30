@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dressme/global/global.dart';
 import 'package:dressme/models/categorys.dart';
-import 'package:dressme/routes/kategori_ekle.dart';
-import 'package:dressme/widgets/info_design.dart';
+import 'package:dressme/routes/category_add.dart';
+import 'package:dressme/widgets/categorys_design.dart';
 import 'package:dressme/widgets/progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';

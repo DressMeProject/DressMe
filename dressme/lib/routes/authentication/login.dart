@@ -169,20 +169,20 @@ class _LoginScreenState extends State<LoginScreen> {
               ],
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Text('Beni Hatırla'),
-              Checkbox(
-                value: rememberMe,
-                onChanged: (bool? value) {
-                  setState(() {
-                    rememberMe = value!;
-                  });
-                },
-              ),
-            ],
-          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.end,
+          //   children: <Widget>[
+          //     Text('Beni Hatırla'),
+          //     Checkbox(
+          //       value: rememberMe,
+          //       onChanged: (bool? value) {
+          //         setState(() {
+          //           rememberMe = value!;
+          //         });
+          //       },
+          //     ),
+          //   ],
+          // ),
           ElevatedButton(
             child: const Text(
               "Giriş Yap",

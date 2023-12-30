@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dressme/models/categorys.dart';
 import 'package:dressme/models/items.dart';
-import 'package:dressme/routes/items_upload_screen.dart';
+import 'package:dressme/routes/items_add_screen.dart';
 import 'package:dressme/widgets/items_design.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
