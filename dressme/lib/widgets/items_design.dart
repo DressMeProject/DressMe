@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class ItemsDesignWidget extends StatefulWidget {
-  Items? model;
-  BuildContext? context;
+  final Items? model;
+  final BuildContext? context;
 
   ItemsDesignWidget({this.model, this.context});
 

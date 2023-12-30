@@ -9,7 +9,6 @@ import 'package:firebase_storage/firebase_storage.dart' as storageRef;
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:palette_generator/palette_generator.dart';
-import 'package:image/image.dart' as img;
 import '../global/global.dart';
 import '../widgets/error_dialog.dart';
 

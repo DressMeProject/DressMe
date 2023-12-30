@@ -7,8 +7,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../global/global.dart';
 
 class InfoDesignWidget extends StatefulWidget {
-  Categorys? model;
-  BuildContext? context;
+  final Categorys? model;
+  final BuildContext? context;
 
   InfoDesignWidget({this.model, this.context});
 
