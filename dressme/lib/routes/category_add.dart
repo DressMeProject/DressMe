@@ -23,6 +23,75 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
   bool uploading = false;
   String uniqueIdName = DateTime.now().millisecondsSinceEpoch.toString();
 
+  List<String> selectedClothes = [];
+
+  Widget GiyimButton(String metin, IconData icon, VoidCallback onPressed) {
+    Widget iconWidget = Icon(icon);
+    if (metin == 'Üst Giyim') {
+      iconWidget = Image.asset(
+        'assets/images/ustgiyim.png',
+        width: 24,
+        height: 24,
+      );
+    }
+    if (metin == 'Alt Giyim') {
+      iconWidget = Image.asset(
+        'assets/images/altgiyim.png',
+        width: 24,
+        height: 24,
+      );
+    }
+    if (metin == 'Dış Giyim') {
+      iconWidget = Image.asset(
+        'assets/images/disgiyim.png',
+        width: 24,
+        height: 24,
+      );
+    }
+    if (metin == 'Aksesuar') {
+      iconWidget = Image.asset(
+        'assets/images/aksesuar.png',
+        width: 24,
+        height: 24,
+      );
+    }
+    if (metin == 'Ayakkabı') {
+      iconWidget = Image.asset(
+        'assets/images/ayakkabi.png',
+        width: 24,
+        height: 24,
+      );
+    }
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0), // Dikey yönde boşluk ekleme
+      child: Column(
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                if (selectedClothes.contains(metin)) {
+                  selectedClothes.clear();
+                } else {
+                  selectedClothes = [metin];
+                }
+              });
+              onPressed();
+            },
+            child: iconWidget,
+            style: ElevatedButton.styleFrom(
+              shape: CircleBorder(),
+              padding: EdgeInsets.all(10),
+              primary: selectedClothes.contains(metin) ? Colors.blue : Colors.transparent,
+              onPrimary: Colors.black,
+            ),
+          ),
+          SizedBox(height: 3), // Düğme ile metin arasında boşluk bırakma
+          Text(metin),
+        ],
+      ),
+    );
+  }
+
   defaultScreen() {
     return Scaffold(
         appBar: AppBar(
@@ -254,6 +323,28 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
             color: Colors.grey,
             thickness: 1,
           ),
+          ListTile(
+            leading: const Icon(
+              Icons.perm_device_information,
+              color: Color(0xFFFFBED7),
+            ),
+            title: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  GiyimButton('Üst Giyim', Icons.image, () {}),
+                  GiyimButton('Alt Giyim', Icons.image, () {}),
+                  GiyimButton('Dış Giyim', Icons.image, () {}),
+                  GiyimButton('Aksesuar', Icons.image, () {}),
+                  GiyimButton('Ayakkabı', Icons.image, () {}),
+                ],
+              ),
+            ),
+          ),
+          const Divider(
+            color: Colors.grey,
+            thickness: 1,
+          ),
         ],
       ),
     );
@@ -267,43 +358,42 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
   }
 
   validateUploadForm() async {
-    if (imageXFile != null) {
-      if (titleController.text.isNotEmpty) {
-        setState(() {
-          uploading = true;
-        });
+    if (imageXFile == null || titleController.text.isEmpty || selectedClothes.isEmpty) {
+      String errorMessage = "Lütfen ";
 
-        //resim yükleme
+      if (imageXFile == null)
+        errorMessage += "bir resim seçin";
+      else if (titleController.text.isEmpty)
+        errorMessage += "kategori adını doldurun";
+      else if (selectedClothes.isEmpty) errorMessage += " bir giyim türü seçin";
 
-        String downloadUrl = await uploadImage(File(imageXFile!.path));
-
-        // bilgileri firebase'e ekleme
-
-        saveInfo(downloadUrl);
-      } else {
-        showDialog(
-            context: context,
-            builder: (c) {
-              return ErrorDialog(
-                message: "Lütfen ürün adı ve ürün bilgisi kısımlarını eksiksiz doldurun.",
-              );
-            });
-      }
-    } else {
       showDialog(
-          context: context,
-          builder: (c) {
-            return ErrorDialog(
-              message: "Lütfen bir resim ekleyin.",
-            );
-          });
+        context: context,
+        builder: (c) {
+          return ErrorDialog(
+            message: errorMessage,
+          );
+        },
+      );
+    } else {
+      setState(() {
+        uploading = true;
+      });
+
+      //resim yükleme
+      String downloadUrl = await uploadImage(File(imageXFile!.path));
+
+      // Seçilen mevsimler listesini bir dizeye dönüştür
+      String selectedClothesString = selectedClothes.join('');
+
+      // Firebase'e renk RGB değerlerini ekleyin
+      saveInfo(downloadUrl, selectedClothesString);
     }
   }
 
-  saveInfo(String downloadUrl) {
+  saveInfo(String downloadUrl, String clothes) {
     final userUID = sharedPreferences?.getString("uid");
     if (sharedPreferences == null || uniqueIdName == null) {
-      print(userUID);
       return;
     }
 
@@ -313,6 +403,7 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
       "categoryID": uniqueIdName,
       "userUID": userUID,
       "categoryTitle": titleController.text.toString(),
+      "clothes": clothes,
       "publishedDate": DateTime.now(),
       "status": "awalible",
       "thumbnailUrl": downloadUrl,

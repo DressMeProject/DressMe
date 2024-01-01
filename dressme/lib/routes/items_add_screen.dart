@@ -22,7 +22,8 @@ class ItemsUploadScreen extends StatefulWidget {
 
 class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
   List<String> selectedSeasons = [];
-  List<String> selectedClothes = [];
+  List<String> selectedStyles = [];
+
   @override
   void initState() {
     super.initState();
@@ -76,71 +77,60 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
     );
   }
 
-  Widget GiyimButton(String metin, IconData icon, VoidCallback onPressed) {
+  Widget styleButton(String metin, IconData icon, VoidCallback onPressed) {
     Widget iconWidget = Icon(icon);
-    if (metin == 'Üst Giyim') {
+    if (metin == 'Klasik\nGiyim') {
       iconWidget = Image.asset(
-        'assets/images/ustgiyim.png',
+        'assets/images/klasik.png',
         width: 24,
         height: 24,
       );
     }
-    if (metin == 'Alt Giyim') {
+    if (metin == 'Günlük\nGiyim') {
       iconWidget = Image.asset(
-        'assets/images/altgiyim.png',
+        'assets/images/gunluk.png',
         width: 24,
         height: 24,
       );
     }
-    if (metin == 'Dış Giyim') {
+    if (metin == 'Spor\nGiyim') {
       iconWidget = Image.asset(
-        'assets/images/disgiyim.png',
+        'assets/images/spor.png',
         width: 24,
         height: 24,
       );
     }
-    if (metin == 'Aksesuar') {
+    if (metin == 'Özel\nGün') {
       iconWidget = Image.asset(
-        'assets/images/aksesuar.png',
+        'assets/images/ozel.png',
         width: 24,
         height: 24,
       );
     }
-    if (metin == 'Ayakkabı') {
-      iconWidget = Image.asset(
-        'assets/images/ayakkabi.png',
-        width: 24,
-        height: 24,
-      );
-    }
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0), // Dikey yönde boşluk ekleme
-      child: Column(
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              setState(() {
-                if (selectedClothes.contains(metin)) {
-                  selectedClothes.clear();
-                } else {
-                  selectedClothes = [metin];
-                }
-              });
-              onPressed();
-            },
-            child: iconWidget,
-            style: ElevatedButton.styleFrom(
-              shape: CircleBorder(),
-              padding: EdgeInsets.all(10),
-              primary: selectedClothes.contains(metin) ? Colors.blue : Colors.transparent,
-              onPrimary: Colors.black,
-            ),
+    return Column(
+      children: [
+        ElevatedButton(
+          onPressed: () {
+            setState(() {
+              if (selectedStyles.contains(metin)) {
+                selectedStyles.remove(metin);
+              } else {
+                selectedStyles.add(metin);
+              }
+            });
+            onPressed();
+          },
+          child: iconWidget,
+          style: ElevatedButton.styleFrom(
+            shape: CircleBorder(),
+            padding: EdgeInsets.all(10),
+            primary: selectedStyles.contains(metin) ? Colors.blue : Colors.transparent,
+            onPrimary: Colors.black,
           ),
-          SizedBox(height: 3), // Düğme ile metin arasında boşluk bırakma
-          Text(metin),
-        ],
-      ),
+        ),
+        SizedBox(height: 3),
+        Text(metin),
+      ],
     );
   }
 
@@ -263,8 +253,8 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
 
     imageXFile = await _picker.pickImage(
       source: ImageSource.camera,
-      maxHeight: 720,
-      maxWidth: 1280,
+      maxHeight: 1080,
+      maxWidth: 1920,
     );
 
     setState(() {
@@ -279,8 +269,8 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
 
     imageXFile = await _picker.pickImage(
       source: ImageSource.gallery,
-      maxHeight: 720,
-      maxWidth: 1280,
+      maxHeight: 1080,
+      maxWidth: 1920,
     );
 
     setState(() {
@@ -438,7 +428,6 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
             color: Colors.grey,
             thickness: 1,
           ),
-          // Renk dairelerini göstereceğimiz alan
           ListTile(
             leading: const Icon(
               Icons.perm_device_information,
@@ -447,7 +436,7 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
             title: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: buildSelectableColorCircles(), // Seçilebilir renk dairelerini burada gösteriyoruz
+                children: buildSelectableColorCircles(),
               ),
             ),
           ),
@@ -500,7 +489,6 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
             thickness: 1,
           ),
           ListTile(
-            // Mevsim butonları
             leading: Icon(
               Icons.perm_device_information,
               color: Color(0xFFFFBED7),
@@ -520,21 +508,18 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
             thickness: 1,
           ),
           ListTile(
-            leading: const Icon(
+            leading: Icon(
               Icons.perm_device_information,
               color: Color(0xFFFFBED7),
             ),
-            title: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  GiyimButton('Üst Giyim', Icons.image, () {}),
-                  GiyimButton('Alt Giyim', Icons.image, () {}),
-                  GiyimButton('Dış Giyim', Icons.image, () {}),
-                  GiyimButton('Aksesuar', Icons.image, () {}),
-                  GiyimButton('Ayakkabı', Icons.image, () {}),
-                ],
-              ),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                styleButton('Klasik\nGiyim', Icons.wb_sunny, () {}),
+                styleButton('Günlük\nGiyim', Icons.image, () {}),
+                styleButton('Spor\nGiyim', Icons.image, () {}),
+                styleButton('Özel\nGün', Icons.image, () {}),
+              ],
             ),
           ),
         ],
@@ -551,7 +536,7 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
   }
 
   validateUploadForm() async {
-    if (imageXFile == null || selectedColor == null || titleController.text.isEmpty || selectedSeasons.isEmpty || selectedClothes.isEmpty) {
+    if (imageXFile == null || selectedColor == null || titleController.text.isEmpty || selectedSeasons.isEmpty) {
       String errorMessage = "Lütfen ";
 
       if (imageXFile == null)
@@ -560,9 +545,7 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
         errorMessage += "bir renk seçin";
       else if (titleController.text.isEmpty)
         errorMessage += "parça adını doldurun";
-      else if (selectedSeasons.isEmpty)
-        errorMessage += "en az bir mevsim seçin";
-      else if (selectedClothes.isEmpty) errorMessage += "en az bir giyim türü seçin";
+      else if (selectedSeasons.isEmpty) errorMessage += "en az bir mevsim seçin";
 
       showDialog(
         context: context,
@@ -583,8 +566,7 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
       // Seçilen mevsimler listesini bir dizeye dönüştür
       String selectedSeasonsString = selectedSeasons.join(', ');
 
-      // Seçilen mevsimler listesini bir dizeye dönüştür
-      String selectedClothesString = selectedClothes.join('');
+      String selectedStyleString = selectedStyles.join(', ');
 
       // Seçilen rengin RGB değerlerini alın
       final int r = selectedColor!.red;
@@ -592,11 +574,11 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
       final int b = selectedColor!.blue;
 
       // Firebase'e renk RGB değerlerini ekleyin
-      saveInfo(downloadUrl, "$r,$g,$b", selectedSeasonsString, selectedClothesString);
+      saveInfo(downloadUrl, "$r,$g,$b", selectedSeasonsString, selectedStyleString);
     }
   }
 
-  saveInfo(String downloadUrl, String rgbValues, String season, String clothes) {
+  saveInfo(String downloadUrl, String rgbValues, String season, String style) {
     // RGB değerlerini virgülle ayrılmış bir dize olarak birleştirme
     final ref = FirebaseFirestore.instance
         .collection("users")
@@ -613,7 +595,7 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
       "shortInfo": shortInfoController.text.toString(),
       "colorRGB": rgbValues,
       "season": season,
-      "clothes": clothes,
+      "style": style,
       "title": titleController.text.toString(),
       "publishedDate": DateTime.now(),
       "status": "awalible",
@@ -627,16 +609,15 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
         "userUID": sharedPreferences!.getString("uid"),
         "userName": sharedPreferences!.getString("name"),
         "shortInfo": shortInfoController.text.toString(),
-        "colorRGB": rgbValues, // Firebase'e renk değerini ekleyin
+        "colorRGB": rgbValues,
         "season": season,
-        "clothes": clothes,
+        "style": style,
         "title": titleController.text.toString(),
         "publishedDate": DateTime.now(),
         "status": "awalible",
         "thumbnailUrl": downloadUrl,
       });
     }).then((_) {
-      // Both Firestore sets are done successfully, navigate to ItemsScreen
       Navigator.push(
         context,
         MaterialPageRoute(

@@ -11,7 +11,7 @@ class Items {
   String? status;
   String? colorRGB;
   String? season;
-  String? clothes;
+  String? style;
 
   Items({
     this.categoryID,
@@ -24,7 +24,7 @@ class Items {
     this.status,
     this.colorRGB,
     this.season,
-    this.clothes,
+    this.style,
   });
 
   Items.fromJson(Map<String, dynamic> json) {
@@ -38,7 +38,7 @@ class Items {
     status = json['status'];
     colorRGB = json['colorRGB'];
     season = json['season'];
-    clothes = json['clothes'];
+    style = json['style'];
   }
 
   Map<String, dynamic> toJson() {
@@ -50,11 +50,10 @@ class Items {
     data['shortInfo'] = shortInfo;
     data['colorRGB'] = colorRGB;
     data['season'] = season;
-    data['clothes'] = clothes;
+    data['style'] = style;
     data['publishedDate'] = publishedDate;
     data['thumbnailUrl'] = thumbnailUrl;
     data['status'] = status;
-
     return data;
   }
 }

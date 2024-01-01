@@ -1,5 +1,6 @@
 import 'package:dressme/global/global.dart';
 import 'package:dressme/routes/category_screen.dart';
+import 'package:dressme/routes/home_detail_screen.dart';
 import 'package:dressme/routes/profile_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +33,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
-    Text('Ana Sayfa', style: TextStyle(fontSize: 24.0)),
+    HomeDetailScreen(),
     KategoriScreen(),
     Text('İpucu'),
   ];
@@ -41,6 +42,11 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -94,9 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
+      body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
           canvasColor: Colors.transparent,

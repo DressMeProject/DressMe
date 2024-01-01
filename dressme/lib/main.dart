@@ -1,7 +1,9 @@
 import 'package:dressme/firebase_options.dart';
 import 'package:dressme/global/global.dart';
+import 'package:dressme/services/weather.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 //import 'package:firebase_app_check/firebase_app_check.dart';
 import 'routes/splash_screen.dart';
@@ -11,17 +13,16 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  // await FirebaseAppCheck.instance.activate(
-  //   webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
-  // );
+
   sharedPreferences = await SharedPreferences.getInstance();
   await Firebase.initializeApp();
 
-  // SharedPreferences.getInstance().then((prefs) {
-  //   sharedPreferences = prefs;
-  //      runApp(MainApp());
-  // });
-  runApp(MainApp());
+  runApp(
+    ChangeNotifierProvider<WeatherData>(
+      create: (context) => WeatherData(),
+      child: MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {
