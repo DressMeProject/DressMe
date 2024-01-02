@@ -12,23 +12,23 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  startTimer() {
-    if (firebaseAuth.currentUser != null) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (c) => const MyHomePage(title: 'Dressme')),
-      );
-    }
-  }
+  // startTimer() {
+  //   if (firebaseAuth.currentUser != null) {
+  //     Navigator.push(
+  //       context,
+  //       MaterialPageRoute(builder: (c) => const MyHomePage(title: 'Dressme')),
+  //     );
+  //   }
+  // }
 
-  @override
-  void initState() {
-    super.initState();
+  // @override
+  // void initState() {
+  //   super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      startTimer();
-    });
-  }
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     startTimer();
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
