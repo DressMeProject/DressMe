@@ -1,7 +1,5 @@
-import 'package:dressme/global/global.dart';
 import 'package:dressme/routes/authentication/login.dart';
 import 'package:dressme/routes/authentication/register.dart';
-import 'package:dressme/routes/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class AuthScreen extends StatefulWidget {
