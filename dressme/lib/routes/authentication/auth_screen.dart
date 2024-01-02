@@ -1,5 +1,7 @@
+import 'package:dressme/global/global.dart';
 import 'package:dressme/routes/authentication/login.dart';
 import 'package:dressme/routes/authentication/register.dart';
+import 'package:dressme/routes/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -10,6 +12,24 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
+  startTimer() {
+    if (firebaseAuth.currentUser != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (c) => const MyHomePage(title: 'Dressme')),
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      startTimer();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

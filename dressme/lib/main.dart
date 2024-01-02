@@ -1,12 +1,11 @@
 import 'package:dressme/firebase_options.dart';
 import 'package:dressme/global/global.dart';
+import 'package:dressme/routes/authentication/auth_screen.dart';
 import 'package:dressme/services/weather.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-//import 'package:firebase_app_check/firebase_app_check.dart';
-import 'routes/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +31,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MySplashScreen(),
+      home: AuthScreen(),
     );
   }
 }
