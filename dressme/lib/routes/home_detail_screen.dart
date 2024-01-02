@@ -68,18 +68,23 @@ class _HomeDetailScreenState extends State<HomeDetailScreen> {
       desiredAccuracy: LocationAccuracy.high,
     );
 
+    double convertToFahrenheit(double fahrenheit) {
+      return (fahrenheit - 32) * 5 / 9;
+    }
+
     // Hava durumu verilerini getir ve görüntüle
-    http.Response response = await http.get(
-        Uri.parse('http://api.openweathermap.org/data/2.5/weather?lat=${position.latitude}&lon=${position.longitude}&units=imperial&appid=${key}'));
+    http.Response response = await http.get(Uri.parse(
+        'http://api.openweathermap.org/data/2.5/weather?lat=${position.latitude}&lon=${position.longitude}&units=imperial&appid=${key}&lang=tr'));
 
     var results = jsonDecode(response.body);
     if (_isMounted) {
       setState(() {
-        context.read<WeatherData>().temp = results['main']['temp'];
+        context.read<WeatherData>().temp = convertToFahrenheit(results['main']['temp']);
         context.read<WeatherData>().description = results['weather'][0]['description'];
         context.read<WeatherData>().currently = results['weather'][0]['main'];
         context.read<WeatherData>().humidity = results['main']['humidity'];
         context.read<WeatherData>().windSpeed = results['wind']['speed'];
+        context.read<WeatherData>().city = results['name'];
       });
     }
   }
@@ -101,12 +106,12 @@ class _HomeDetailScreenState extends State<HomeDetailScreen> {
                 Padding(
                   padding: EdgeInsets.only(bottom: 10.0),
                   child: Text(
-                    'Şu anki Konumunuzda',
+                    '${weatherData.city ?? "Yükleniyor"}',
                     style: TextStyle(color: Colors.white, fontSize: 14.0, fontWeight: FontWeight.w600),
                   ),
                 ),
                 Text(
-                  weatherData.temp != null ? weatherData.temp.toString() + "\u00B0" : "Yükleniyor",
+                  weatherData.temp != null ? weatherData.temp.toStringAsFixed(1) + "\u00B0C" : "Yükleniyor",
                   style: TextStyle(color: Colors.white, fontSize: 40.0, fontWeight: FontWeight.w600),
                 ),
                 Padding(
@@ -127,7 +132,7 @@ class _HomeDetailScreenState extends State<HomeDetailScreen> {
                   ListTile(
                     leading: FaIcon(FontAwesomeIcons.thermometerHalf),
                     title: Text('Sıcaklık'),
-                    trailing: Text(weatherData.temp != null ? weatherData.temp.toString() + "\u00B0" : "Yükleniyor"),
+                    trailing: Text(weatherData.temp != null ? weatherData.temp.toStringAsFixed(1) + "\u00B0C" : "Yükleniyor"),
                   ),
                   ListTile(
                     leading: FaIcon(FontAwesomeIcons.cloud),

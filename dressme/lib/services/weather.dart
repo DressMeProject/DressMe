@@ -6,6 +6,7 @@ class WeatherData extends ChangeNotifier {
   var currently;
   var humidity;
   var windSpeed;
+  var city;
 
   WeatherData({
     this.temp,
@@ -13,5 +14,6 @@ class WeatherData extends ChangeNotifier {
     this.currently,
     this.humidity,
     this.windSpeed,
+    this.city,
   });
 }
