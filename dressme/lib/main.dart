@@ -14,24 +14,14 @@ void main() async {
   );
 
   sharedPreferences = await SharedPreferences.getInstance();
-  await Firebase.initializeApp();
 
   runApp(
     ChangeNotifierProvider<WeatherData>(
       create: (context) => WeatherData(),
-      child: MainApp(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: MySplashScreen(),
+      ),
     ),
   );
-}
-
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: MySplashScreen(),
-    );
-  }
 }
