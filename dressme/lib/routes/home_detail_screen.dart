@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:dressme/services/weather.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -18,9 +17,12 @@ class _HomeDetailScreenState extends State<HomeDetailScreen> {
 
   var temp;
   var description;
+  var icon;
   var currently;
   var humidity;
   var windSpeed;
+  var city;
+  var country;
 
   @override
   void initState() {
@@ -81,10 +83,12 @@ class _HomeDetailScreenState extends State<HomeDetailScreen> {
       setState(() {
         context.read<WeatherData>().temp = convertToFahrenheit(results['main']['temp']);
         context.read<WeatherData>().description = results['weather'][0]['description'];
+        context.read<WeatherData>().icon = results['weather'][0]['icon'];
         context.read<WeatherData>().currently = results['weather'][0]['main'];
         context.read<WeatherData>().humidity = results['main']['humidity'];
         context.read<WeatherData>().windSpeed = results['wind']['speed'];
         context.read<WeatherData>().city = results['name'];
+        context.read<WeatherData>().country = results['sys']['country'];
       });
     }
   }
@@ -92,68 +96,46 @@ class _HomeDetailScreenState extends State<HomeDetailScreen> {
   @override
   Widget build(BuildContext context) {
     var weatherData = context.watch<WeatherData>();
-    return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Container(
-            width: double.infinity,
-            height: MediaQuery.of(context).size.height / 3,
-            color: Colors.blue,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+    return Container(
+      padding: EdgeInsets.only(top: 10),
+      child: SizedBox(
+        height: 100, // Adjust the height as needed
+        child: Card(
+          color: Colors.grey,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0), // Adding rounded corners
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(bottom: 10.0),
-                  child: Text(
-                    '${weatherData.city ?? "Yükleniyor"}',
-                    style: TextStyle(color: Colors.white, fontSize: 14.0, fontWeight: FontWeight.w600),
-                  ),
-                ),
                 Text(
-                  weatherData.temp != null ? weatherData.temp.toStringAsFixed(1) + "\u00B0C" : "Yükleniyor",
-                  style: TextStyle(color: Colors.white, fontSize: 40.0, fontWeight: FontWeight.w600),
+                  '${weatherData.city ?? "Yükleniyor"} , ${weatherData.country ?? "Yükleniyor"}',
+                  style: TextStyle(fontSize: 20.0),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10.0),
-                  child: Text(
-                    weatherData.currently != null ? weatherData.currently.toString() : "Yükleniyor",
-                    style: TextStyle(color: Colors.white, fontSize: 14.0, fontWeight: FontWeight.w600),
-                  ),
+                Image.network(
+                  'https://openweathermap.org/img/wn/${weatherData.icon}@2x.png',
+                  width: 75,
+                  height: 75,
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      weatherData.temp != null ? weatherData.temp.toStringAsFixed(0) + "\u00B0C" : "Yükleniyor",
+                      style: TextStyle(fontSize: 20.0),
+                    ),
+                    Text(
+                      weatherData.description != null ? weatherData.description.toString() : "Yükleniyor",
+                      style: TextStyle(fontSize: 16.0),
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.all(20.0),
-              child: ListView(
-                children: <Widget>[
-                  ListTile(
-                    leading: FaIcon(FontAwesomeIcons.thermometerHalf),
-                    title: Text('Sıcaklık'),
-                    trailing: Text(weatherData.temp != null ? weatherData.temp.toStringAsFixed(1) + "\u00B0C" : "Yükleniyor"),
-                  ),
-                  ListTile(
-                    leading: FaIcon(FontAwesomeIcons.cloud),
-                    title: Text('Hava Durumu'),
-                    trailing: Text(weatherData.description != null ? weatherData.description.toString() : "Yükleniyor"),
-                  ),
-                  ListTile(
-                    leading: FaIcon(FontAwesomeIcons.sun),
-                    title: Text('Nem'),
-                    trailing: Text(weatherData.humidity != null ? weatherData.humidity.toString() : "Yükleniyor"),
-                  ),
-                  ListTile(
-                    leading: FaIcon(FontAwesomeIcons.wind),
-                    title: Text('Rüzgar Hızı'),
-                    trailing: Text(weatherData.windSpeed != null ? weatherData.windSpeed.toString() : "Yükleniyor"),
-                  ),
-                ],
-              ),
-            ),
-          )
-        ],
+        ),
       ),
     );
   }

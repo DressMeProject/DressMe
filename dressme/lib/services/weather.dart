@@ -7,6 +7,8 @@ class WeatherData extends ChangeNotifier {
   var humidity;
   var windSpeed;
   var city;
+  var country;
+  var icon;
 
   WeatherData({
     this.temp,
@@ -15,5 +17,7 @@ class WeatherData extends ChangeNotifier {
     this.humidity,
     this.windSpeed,
     this.city,
+    this.country,
+    this.icon,
   });
 }
