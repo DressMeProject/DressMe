@@ -112,7 +112,7 @@ class _HomeDetailScreenState extends State<HomeDetailScreen> {
               children: <Widget>[
                 Text(
                   '${weatherData.city ?? "Yükleniyor"} , ${weatherData.country ?? "Yükleniyor"}',
-                  style: TextStyle(fontSize: 20.0),
+                  style: TextStyle(fontSize: 18.0),
                 ),
                 Image.network(
                   'https://openweathermap.org/img/wn/${weatherData.icon}@2x.png',
@@ -124,11 +124,11 @@ class _HomeDetailScreenState extends State<HomeDetailScreen> {
                   children: <Widget>[
                     Text(
                       weatherData.temp != null ? weatherData.temp.toStringAsFixed(0) + "\u00B0C" : "Yükleniyor",
-                      style: TextStyle(fontSize: 20.0),
+                      style: TextStyle(fontSize: 17.0),
                     ),
                     Text(
                       weatherData.description != null ? weatherData.description.toString() : "Yükleniyor",
-                      style: TextStyle(fontSize: 16.0),
+                      style: TextStyle(fontSize: 13.0),
                     ),
                   ],
                 ),
