@@ -114,11 +114,13 @@ class _HomeDetailScreenState extends State<HomeDetailScreen> {
                   '${weatherData.city ?? "Yükleniyor"} , ${weatherData.country ?? "Yükleniyor"}',
                   style: TextStyle(fontSize: 18.0),
                 ),
-                Image.network(
-                  'https://openweathermap.org/img/wn/${weatherData.icon}@2x.png',
-                  width: 75,
-                  height: 75,
-                ),
+                weatherData.icon != null
+                    ? Image.network(
+                        'https://openweathermap.org/img/wn/${weatherData.icon}@2x.png',
+                        width: 75,
+                        height: 75,
+                      )
+                    : Icon(Icons.error), // İkon alınamazsa yerine hata ikonu göster
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
