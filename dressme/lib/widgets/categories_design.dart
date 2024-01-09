@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dressme/models/categorys.dart';
+import 'package:dressme/models/categories.dart';
 import 'package:dressme/routes/items_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -7,7 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../global/global.dart';
 
 class InfoDesignWidget extends StatefulWidget {
-  final Categorys? model;
+  final Categories? model;
   final BuildContext? context;
 
   InfoDesignWidget({this.model, this.context});
@@ -18,7 +18,7 @@ class InfoDesignWidget extends StatefulWidget {
 
 class _InfoDesignWidgetState extends State<InfoDesignWidget> {
   deleteMenu(String categoryID) {
-    FirebaseFirestore.instance.collection("users").doc(sharedPreferences!.getString("uid")).collection("categorys").doc(categoryID).delete();
+    FirebaseFirestore.instance.collection("users").doc(sharedPreferences!.getString("uid")).collection("categories").doc(categoryID).delete();
     Fluttertoast.showToast(msg: "Kategori Silindi");
   }
 

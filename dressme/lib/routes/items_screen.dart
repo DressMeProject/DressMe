@@ -1,8 +1,7 @@
-import 'package:dressme/routes/category_add.dart';
 import 'package:dressme/routes/category_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dressme/models/categorys.dart';
+import 'package:dressme/models/categories.dart';
 import 'package:dressme/models/items.dart';
 import 'package:dressme/routes/items_add_screen.dart';
 import 'package:dressme/widgets/items_design.dart';
@@ -11,7 +10,7 @@ import '../global/global.dart';
 import '../widgets/progress_bar.dart';
 
 class ItemsScreen extends StatefulWidget {
-  final Categorys? model;
+  final Categories? model;
 
   ItemsScreen({this.model});
 
@@ -40,8 +39,7 @@ class _ItemsScreenState extends State<ItemsScreen> {
         ),
         title: Text(
           widget.model!.categoryTitle!,
-          style: const TextStyle(
-              fontSize: 30, fontFamily: "Lobster", color: Colors.white),
+          style: const TextStyle(fontSize: 30, fontFamily: "Lobster", color: Colors.white),
         ),
         centerTitle: true,
         automaticallyImplyLeading: false,
@@ -51,8 +49,7 @@ class _ItemsScreenState extends State<ItemsScreen> {
             color: Colors.white,
           ),
           onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (c) => KategoriScreen()));
+            Navigator.push(context, MaterialPageRoute(builder: (c) => KategoriScreen()));
           },
         ),
         actions: [
@@ -63,10 +60,7 @@ class _ItemsScreenState extends State<ItemsScreen> {
             ),
             iconSize: 34,
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (c) => ItemsUploadScreen(model: widget.model)));
+              Navigator.push(context, MaterialPageRoute(builder: (c) => ItemsUploadScreen(model: widget.model)));
             },
           ),
         ],
@@ -77,7 +71,7 @@ class _ItemsScreenState extends State<ItemsScreen> {
             stream: FirebaseFirestore.instance
                 .collection("users")
                 .doc(sharedPreferences!.getString("uid"))
-                .collection("categorys")
+                .collection("categories")
                 .doc(widget.model!.categoryID)
                 .collection("items")
                 .orderBy("publishedDate", descending: true)
@@ -94,8 +88,7 @@ class _ItemsScreenState extends State<ItemsScreen> {
                       staggeredTileBuilder: (c) => StaggeredTile.fit(1),
                       itemBuilder: (context, index) {
                         Items model = Items.fromJson(
-                          snapshot.data!.docs[index].data()!
-                              as Map<String, dynamic>,
+                          snapshot.data!.docs[index].data()! as Map<String, dynamic>,
                         );
                         return ItemsDesignWidget(
                           model: model,

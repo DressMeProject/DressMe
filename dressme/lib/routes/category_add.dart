@@ -64,8 +64,7 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
       );
     }
     return Padding(
-      padding: const EdgeInsets.symmetric(
-          horizontal: 8.0), // Dikey yönde boşluk ekleme
+      padding: const EdgeInsets.symmetric(horizontal: 8.0), // Dikey yönde boşluk ekleme
       child: Column(
         children: [
           ElevatedButton(
@@ -83,9 +82,7 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
             style: ElevatedButton.styleFrom(
               shape: CircleBorder(),
               padding: EdgeInsets.all(10),
-              primary: selectedClothes.contains(metin)
-                  ? Colors.blue
-                  : Colors.transparent,
+              primary: selectedClothes.contains(metin) ? Colors.blue : Colors.transparent,
               onPrimary: Colors.black,
             ),
           ),
@@ -114,10 +111,7 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
           ),
           title: const Text(
             "Yeni Kategori Ekle",
-            style: TextStyle(
-                fontSize: 30,
-                fontFamily: "Lobster",
-                color: Color.fromARGB(240, 239, 231, 231)),
+            style: TextStyle(fontSize: 30, fontFamily: "Lobster", color: Color.fromARGB(240, 239, 231, 231)),
           ),
           centerTitle: true,
           automaticallyImplyLeading: false,
@@ -182,10 +176,7 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
         return SimpleDialog(
           title: const Text(
             "Kategori Resmi",
-            style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontFamily: "Valera"),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontFamily: "Valera"),
           ),
           children: [
             SimpleDialogOption(
@@ -261,8 +252,7 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
         ),
         title: const Text(
           "Kategori Ekleniyor",
-          style: TextStyle(
-              fontSize: 20, fontFamily: "Lobster", color: Colors.white),
+          style: TextStyle(fontSize: 20, fontFamily: "Lobster", color: Colors.white),
         ),
         centerTitle: true,
         automaticallyImplyLeading: true,
@@ -369,9 +359,7 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
   }
 
   validateUploadForm() async {
-    if (imageXFile == null ||
-        titleController.text.isEmpty ||
-        selectedClothes.isEmpty) {
+    if (imageXFile == null || titleController.text.isEmpty || selectedClothes.isEmpty) {
       String errorMessage = "Lütfen ";
 
       if (imageXFile == null)
@@ -410,10 +398,7 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
       return;
     }
 
-    final ref = FirebaseFirestore.instance
-        .collection("users")
-        .doc(userUID)
-        .collection("categorys");
+    final ref = FirebaseFirestore.instance.collection("users").doc(userUID).collection("categories");
 
     ref.doc(uniqueIdName).set({
       "categoryID": uniqueIdName,
@@ -440,11 +425,9 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
   }
 
   uploadImage(mImageFile) async {
-    storageRef.Reference reference =
-        storageRef.FirebaseStorage.instance.ref().child("categorys");
+    storageRef.Reference reference = storageRef.FirebaseStorage.instance.ref().child("categories");
 
-    storageRef.UploadTask uploadTask =
-        reference.child(uniqueIdName + ".jpg").putFile(mImageFile);
+    storageRef.UploadTask uploadTask = reference.child(uniqueIdName + ".jpg").putFile(mImageFile);
 
     storageRef.TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});
 

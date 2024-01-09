@@ -12,50 +12,6 @@ class ItemDetailsScreen extends StatefulWidget {
 class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
   TextEditingController counterTextEditingController = TextEditingController();
 
-  // Future<void> deleteItem(String itemID) async {
-  //   await showDialog(
-  //     context: context,
-  //     builder: (BuildContext dialogContext) {
-  //       return AlertDialog(
-  //         title: Text('Parça Sil'),
-  //         content: Text('Parçayı silmek istediğinize emin misiniz?', style: TextStyle(color: Colors.black)),
-  //         actions: <Widget>[
-  //           TextButton(
-  //             child: Text('Evet', style: TextStyle(color: Colors.black)),
-  //             onPressed: () async {
-  //               await FirebaseFirestore.instance
-  //                   .collection("users")
-  //                   .doc(sharedPreferences!.getString("uid"))
-  //                   .collection("categorys")
-  //                   .doc(widget.model!.categoryID!)
-  //                   .collection("items")
-  //                   .doc(itemID)
-  //                   .delete();
-
-  //               await FirebaseFirestore.instance.collection("items").doc(itemID).delete();
-
-  //               Navigator.of(dialogContext).pop();
-  //               Navigator.push(
-  //                 context,
-  //                 MaterialPageRoute(
-  //                   builder: (c) => ItemsScreen(model: widget.model),
-  //                 ),
-  //               );
-  //               Fluttertoast.showToast(msg: "Parça Silindi.");
-  //             },
-  //           ),
-  //           TextButton(
-  //             child: Text('Hayır', style: TextStyle(color: Colors.black)),
-  //             onPressed: () {
-  //               Navigator.of(dialogContext).pop();
-  //             },
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,8 +32,7 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
         ),
         title: Text(
           widget.model!.shortInfo!,
-          style: const TextStyle(
-              fontSize: 30, fontFamily: "Lobster", color: Colors.white),
+          style: const TextStyle(fontSize: 30, fontFamily: "Lobster", color: Colors.white),
         ),
         centerTitle: true,
         automaticallyImplyLeading: false,
@@ -101,12 +56,9 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                 Center(
                   child: Image.network(
                     widget.model!.thumbnailUrl.toString(),
-                    width:
-                        MediaQuery.of(context).size.width * 0.8, // %80 genişlik
-                    height: MediaQuery.of(context).size.height *
-                        0.5, // %30 yükseklik
-                    fit: BoxFit
-                        .contain, // Resmi boyutları koruyarak içine sığacak şekilde küçült
+                    width: MediaQuery.of(context).size.width * 0.8, // %80 genişlik
+                    height: MediaQuery.of(context).size.height * 0.5, // %30 yükseklik
+                    fit: BoxFit.contain, // Resmi boyutları koruyarak içine sığacak şekilde küçült
                     alignment: Alignment.center, // Resmi ortala
                   ),
                 ),
@@ -114,8 +66,7 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     widget.model!.shortInfo.toString(),
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 20),
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                 ),
                 Padding(
@@ -123,8 +74,7 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                   child: Text(
                     widget.model!.title.toString(),
                     textAlign: TextAlign.justify,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.normal, fontSize: 14),
+                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 14),
                   ),
                 ),
                 Padding(

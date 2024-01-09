@@ -20,7 +20,7 @@ class _ItemsDesignWidgetState extends State<ItemsDesignWidget> {
     FirebaseFirestore.instance
         .collection("users")
         .doc(sharedPreferences!.getString("uid"))
-        .collection("categorys")
+        .collection("categories")
         .doc(categoryID)
         .collection("items")
         .doc(itemID)

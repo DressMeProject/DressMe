@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dressme/global/global.dart';
-import 'package:dressme/models/categorys.dart';
+import 'package:dressme/models/categories.dart';
 import 'package:dressme/routes/category_add.dart';
-import 'package:dressme/widgets/categorys_design.dart';
+import 'package:dressme/widgets/categories_design.dart';
 import 'package:dressme/widgets/progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -47,7 +47,7 @@ class _KategoriScreenState extends State<KategoriScreen> {
       body: CustomScrollView(
         slivers: [
           StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance.collection("users").doc(sharedPreferences!.getString("uid")).collection("categorys").snapshots(),
+            stream: FirebaseFirestore.instance.collection("users").doc(sharedPreferences!.getString("uid")).collection("categories").snapshots(),
             builder: (context, snapshot) {
               return !snapshot.hasData
                   ? SliverToBoxAdapter(
@@ -59,7 +59,7 @@ class _KategoriScreenState extends State<KategoriScreen> {
                       crossAxisCount: 2,
                       staggeredTileBuilder: (c) => StaggeredTile.fit(1),
                       itemBuilder: (context, index) {
-                        Categorys model = Categorys.fromJson(
+                        Categories model = Categories.fromJson(
                           snapshot.data!.docs[index].data()! as Map<String, dynamic>,
                         );
                         return InfoDesignWidget(

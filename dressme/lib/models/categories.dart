@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Categorys {
+class Categories {
   String? categoryID;
   String? userUID;
   String? categoryTitle;
@@ -9,9 +9,9 @@ class Categorys {
   String? thumbnailUrl;
   String? status;
 
-  Categorys({this.categoryID, this.userUID, this.categoryTitle, this.publishedDate, this.thumbnailUrl, this.status});
+  Categories({this.categoryID, this.userUID, this.categoryTitle, this.publishedDate, this.thumbnailUrl, this.status});
 
-  Categorys.fromJson(Map<String, dynamic> json) {
+  Categories.fromJson(Map<String, dynamic> json) {
     categoryID = json["categoryID"];
     userUID = json['userUID'];
     categoryTitle = json['categoryTitle'];
