@@ -76,7 +76,8 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
         ),
         title: Text(
           widget.model!.shortInfo!,
-          style: const TextStyle(fontSize: 30, fontFamily: "Lobster", color: Colors.white),
+          style: const TextStyle(
+              fontSize: 30, fontFamily: "Lobster", color: Colors.white),
         ),
         centerTitle: true,
         automaticallyImplyLeading: false,
@@ -100,9 +101,12 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                 Center(
                   child: Image.network(
                     widget.model!.thumbnailUrl.toString(),
-                    width: MediaQuery.of(context).size.width * 0.8, // %80 genişlik
-                    height: MediaQuery.of(context).size.height * 0.5, // %30 yükseklik
-                    fit: BoxFit.contain, // Resmi boyutları koruyarak içine sığacak şekilde küçült
+                    width:
+                        MediaQuery.of(context).size.width * 0.8, // %80 genişlik
+                    height: MediaQuery.of(context).size.height *
+                        0.5, // %30 yükseklik
+                    fit: BoxFit
+                        .contain, // Resmi boyutları koruyarak içine sığacak şekilde küçült
                     alignment: Alignment.center, // Resmi ortala
                   ),
                 ),
@@ -110,7 +114,8 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     widget.model!.shortInfo.toString(),
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                 ),
                 Padding(
@@ -118,7 +123,38 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                   child: Text(
                     widget.model!.title.toString(),
                     textAlign: TextAlign.justify,
-                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 14),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.normal, fontSize: 14),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Renk: ${widget.model!.colorRGB}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Sezon: ${widget.model!.season}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Stil: ${widget.model!.style}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 14,
+                    ),
                   ),
                 ),
                 const SizedBox(

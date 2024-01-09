@@ -67,7 +67,9 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
           style: ElevatedButton.styleFrom(
             shape: CircleBorder(),
             padding: EdgeInsets.all(10),
-            primary: selectedSeasons.contains(metin) ? Colors.blue : Colors.transparent,
+            primary: selectedSeasons.contains(metin)
+                ? Colors.blue
+                : Colors.transparent,
             onPrimary: Colors.black,
           ),
         ),
@@ -124,7 +126,9 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
           style: ElevatedButton.styleFrom(
             shape: CircleBorder(),
             padding: EdgeInsets.all(10),
-            primary: selectedStyles.contains(metin) ? Colors.blue : Colors.transparent,
+            primary: selectedStyles.contains(metin)
+                ? Colors.blue
+                : Colors.transparent,
             onPrimary: Colors.black,
           ),
         ),
@@ -152,7 +156,10 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
         ),
         title: const Text(
           "Yeni Parça Ekle",
-          style: TextStyle(fontSize: 30, fontFamily: "Lobster", color: Color.fromARGB(240, 239, 231, 231)),
+          style: TextStyle(
+              fontSize: 30,
+              fontFamily: "Lobster",
+              color: Color.fromARGB(240, 239, 231, 231)),
         ),
         centerTitle: true,
         automaticallyImplyLeading: false,
@@ -218,7 +225,10 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
         return SimpleDialog(
           title: const Text(
             "Ürün Resmi",
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontFamily: "Valera"),
+            style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontFamily: "Valera"),
           ),
           children: [
             SimpleDialogOption(
@@ -307,7 +317,9 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
       if (paletteGenerator.paletteColors.isNotEmpty) {
         setState(() {
           dominantColor = paletteGenerator.dominantColor!.color;
-          paletteColors = paletteGenerator.paletteColors.map((paletteColor) => paletteColor.color).toList();
+          paletteColors = paletteGenerator.paletteColors
+              .map((paletteColor) => paletteColor.color)
+              .toList();
 
           renkController.text = '';
           for (var color in paletteColors) {
@@ -353,7 +365,9 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: color,
-            border: isSelected ? Border.all(color: Color.fromARGB(255, 238, 91, 91), width: 2) : null,
+            border: isSelected
+                ? Border.all(color: Color.fromARGB(255, 238, 91, 91), width: 2)
+                : null,
           ),
         ),
       );
@@ -378,7 +392,8 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
         ),
         title: const Text(
           "Parça Ekleniyor",
-          style: TextStyle(fontSize: 20, fontFamily: "Lobster", color: Colors.white),
+          style: TextStyle(
+              fontSize: 20, fontFamily: "Lobster", color: Colors.white),
         ),
         centerTitle: true,
         automaticallyImplyLeading: true,
@@ -536,7 +551,10 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
   }
 
   validateUploadForm() async {
-    if (imageXFile == null || selectedColor == null || titleController.text.isEmpty || selectedSeasons.isEmpty) {
+    if (imageXFile == null ||
+        selectedColor == null ||
+        titleController.text.isEmpty ||
+        selectedSeasons.isEmpty) {
       String errorMessage = "Lütfen ";
 
       if (imageXFile == null)
@@ -545,7 +563,8 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
         errorMessage += "bir renk seçin";
       else if (titleController.text.isEmpty)
         errorMessage += "parça adını doldurun";
-      else if (selectedSeasons.isEmpty) errorMessage += "en az bir mevsim seçin";
+      else if (selectedSeasons.isEmpty)
+        errorMessage += "en az bir mevsim seçin";
 
       showDialog(
         context: context,
@@ -574,7 +593,8 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
       final int b = selectedColor!.blue;
 
       // Firebase'e renk RGB değerlerini ekleyin
-      saveInfo(downloadUrl, "$r,$g,$b", selectedSeasonsString, selectedStyleString);
+      saveInfo(
+          downloadUrl, "$r,$g,$b", selectedSeasonsString, selectedStyleString);
     }
   }
 
@@ -621,7 +641,8 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ItemsScreen(model: widget.model), // Replace with your screen/widget
+          builder: (context) => ItemsScreen(
+              model: widget.model), // Replace with your screen/widget
         ),
       ).then((_) {
         // Clear the form and reset the state after navigating back
@@ -635,9 +656,11 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
   }
 
   uploadImage(mImageFile) async {
-    storageRef.Reference reference = storageRef.FirebaseStorage.instance.ref().child("items");
+    storageRef.Reference reference =
+        storageRef.FirebaseStorage.instance.ref().child("items");
 
-    storageRef.UploadTask uploadTask = reference.child(uniqueIdName + ".jpg").putFile(mImageFile);
+    storageRef.UploadTask uploadTask =
+        reference.child(uniqueIdName + ".jpg").putFile(mImageFile);
 
     storageRef.TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});
 
