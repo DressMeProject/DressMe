@@ -412,10 +412,7 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
       clearMenuUploadForm();
 
       // Bilgileri başarıyla kaydettikten sonra KategoriSreen'e yönlendirme
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => KategoriScreen()),
-      );
+      Navigator.pop(context);
 
       setState(() {
         uniqueIdName = DateTime.now().millisecondsSinceEpoch.toString();

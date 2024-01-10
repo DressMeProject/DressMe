@@ -49,7 +49,7 @@ class _ItemsScreenState extends State<ItemsScreen> {
             color: Colors.white,
           ),
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (c) => KategoriScreen()));
+            Navigator.pop(context);
           },
         ),
         actions: [
