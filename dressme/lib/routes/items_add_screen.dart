@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dressme/models/categories.dart';
-import 'package:dressme/routes/items_screen.dart';
 import 'package:dressme/widgets/progress_bar%20copy.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart' as storageRef;
