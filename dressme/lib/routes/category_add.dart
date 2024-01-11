@@ -48,9 +48,9 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
         height: 24,
       );
     }
-    if (metin == 'Aksesuar') {
+    if (metin == 'Elbise') {
       iconWidget = Image.asset(
-        'assets/images/aksesuar.png',
+        'assets/images/elbise.png',
         width: 24,
         height: 24,
       );
@@ -58,6 +58,13 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
     if (metin == 'Ayakkabı') {
       iconWidget = Image.asset(
         'assets/images/ayakkabi.png',
+        width: 24,
+        height: 24,
+      );
+    }
+    if (metin == 'Aksesuar') {
+      iconWidget = Image.asset(
+        'assets/images/aksesuar.png',
         width: 24,
         height: 24,
       );
@@ -335,8 +342,9 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
                   GiyimButton('Üst Giyim', Icons.image, () {}),
                   GiyimButton('Alt Giyim', Icons.image, () {}),
                   GiyimButton('Dış Giyim', Icons.image, () {}),
-                  GiyimButton('Aksesuar', Icons.image, () {}),
+                  GiyimButton('Elbise', Icons.image, () {}),
                   GiyimButton('Ayakkabı', Icons.image, () {}),
+                  GiyimButton('Aksesuar', Icons.image, () {}),
                 ],
               ),
             ),
@@ -380,13 +388,10 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
         uploading = true;
       });
 
-      //resim yükleme
       String downloadUrl = await uploadImage(File(imageXFile!.path));
 
-      // Seçilen mevsimler listesini bir dizeye dönüştür
       String selectedClothesString = selectedClothes.join('');
 
-      // Firebase'e renk RGB değerlerini ekleyin
       saveInfo(downloadUrl, selectedClothesString);
     }
   }
