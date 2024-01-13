@@ -1,15 +1,15 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dressme/models/categories.dart';
-import 'package:dressme/widgets/progress_bar%20copy.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart' as storageRef;
-import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:palette_generator/palette_generator.dart';
+
 import '../global/global.dart';
+import '../models/categories.dart';
 import '../widgets/error_dialog.dart';
+import '../widgets/progress_bar%20copy.dart';
 
 class ItemsUploadScreen extends StatefulWidget {
   final Categories? model;
@@ -313,6 +313,8 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
             final int r = color.red;
             final int g = color.green;
             final int b = color.blue;
+
+            if (r > 200 && g < 100 && b < 100) {}
             renkController.text += '$r$g$b ';
           }
         });
@@ -535,7 +537,7 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
   }
 
   validateUploadForm() async {
-    if (imageXFile == null || selectedColor == null || titleController.text.isEmpty || selectedSeasons.isEmpty) {
+    if (imageXFile == null || selectedColor == null || titleController.text.isEmpty || selectedSeasons.isEmpty || selectedStyles.isEmpty) {
       String errorMessage = "Lütfen ";
 
       if (imageXFile == null)
@@ -544,7 +546,9 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
         errorMessage += "bir renk seçin";
       else if (titleController.text.isEmpty)
         errorMessage += "parça adını doldurun";
-      else if (selectedSeasons.isEmpty) errorMessage += "en az bir mevsim seçin";
+      else if (selectedSeasons.isEmpty)
+        errorMessage += "en az bir mevsim seçin";
+      else if (selectedStyles.isEmpty) errorMessage += "en az bir giyim türü seçin";
 
       showDialog(
         context: context,
@@ -567,10 +571,44 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
 
       String selectedStyleString = selectedStyles.join(', ');
 
-      // Seçilen rengin RGB değerlerini alın
+      //Seçilen rengin RGB değerlerini alın
       final int r = selectedColor!.red;
       final int g = selectedColor!.green;
       final int b = selectedColor!.blue;
+
+      //strig olmasını istersek
+      // String getRenkAdi(int r, int g, int b) {
+      //   // Renk aralıklarını tanımla
+      //   final Map<String, List<int>> renkAraliklari = {
+      //     'Siyah': [0, 0, 0],
+      //     'Beyaz': [255, 255, 255],
+      //     'Kırmızı': [255, 0, 0],
+      //     'Sarı': [255, 255, 0],
+      //     'Yeşil': [0, 255, 0],
+      //     'Mavi': [0, 0, 255],
+      //     'Turuncu': [255, 165, 0],
+      //     'Pembe': [255, 192, 203],
+      //     'Mor': [128, 0, 128],
+      //     'Gri': [128, 128, 128],
+      //     'Kahverengi': [165, 42, 42],
+      //     // Diğer renk aralıklarını isteğinize göre ekleyebilirsiniz
+      //   };
+
+      //   // Seçilen renk ile en yakın renk aralığını bul
+      //   String enYakinRenkAdi = 'Bilinmiyor';
+      //   double enKucukUzaklik = double.infinity;
+
+      //   renkAraliklari.forEach((renkAdi, aralik) {
+      //     double uzaklik = ((aralik[0] - r).abs() + (aralik[1] - g).abs() + (aralik[2] - b).abs()) / 3;
+
+      //     if (uzaklik < enKucukUzaklik) {
+      //       enKucukUzaklik = uzaklik;
+      //       enYakinRenkAdi = renkAdi;
+      //     }
+      //   });
+
+      //   return enYakinRenkAdi;
+      // }
 
       // Firebase'e renk RGB değerlerini ekleyin
       saveInfo(downloadUrl, "$r,$g,$b", selectedSeasonsString, selectedStyleString);
