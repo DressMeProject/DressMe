@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 import '../services/weather.dart';
 
 class HomeDetailScreen extends StatefulWidget {
-  const HomeDetailScreen({super.key});
+  const HomeDetailScreen({required});
 
   @override
   State<HomeDetailScreen> createState() => _HomeDetailScreenState();
@@ -90,17 +90,53 @@ class _HomeDetailScreenState extends State<HomeDetailScreen> {
     }
   }
 
+// Kullanıcının kıyafetlerini çek
+  Future<void> getKiyafetler() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    List<String> altGiyimKategoriIDs = [];
+    List<String> ustGiyimKategoriIDs = [];
+    List<String> disGiyimKategoriIDs = [];
+    List<String> ayakkabiKategoriIDs = [];
+    List<String> aksesuarKategoriIDs = [];
+
+    // var kiyafet =
+    //     await FirebaseFirestore.instance.collection('users').doc(user!.uid).collection('categories').doc('1706284556778').collection('items').get();
+    var kiyafet = await FirebaseFirestore.instance.collection('users').doc(user!.uid).collection('categories').get();
+    kiyafet.docs.forEach((DocumentSnapshot document) {
+      Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+
+      String clothes = data['clothes'];
+      print(data);
+      if (clothes == "Alt Giyim") {
+        altGiyimKategoriIDs.add(document.id);
+      }
+      if (clothes == "Üst Giyim") {
+        ustGiyimKategoriIDs.add(document.id);
+      }
+      if (clothes == "Dış Giyim") {
+        disGiyimKategoriIDs.add(document.id);
+      }
+      if (clothes == "Ayakkabı") {
+        ayakkabiKategoriIDs.add(document.id);
+      }
+      if (clothes == "Aksesuar") {
+        aksesuarKategoriIDs.add(document.id);
+      }
+    });
+    print("Alt Giyim Kategorileri ID'leri: $altGiyimKategoriIDs");
+    print("Üst Giyim Kategorileri ID'leri: $ustGiyimKategoriIDs");
+    print("Dış Giyim Kategorileri ID'leri: $disGiyimKategoriIDs");
+    print("Ayakkabı Kategorileri ID'leri: $ayakkabiKategoriIDs");
+    print("Aksesuar Kategorileri ID'leri: $aksesuarKategoriIDs");
+  }
+
   void _kombinOlustur() async {
     var weatherData = context.read<WeatherData>();
     // Hava durumunu çek
-    var havaDurumu = weatherData.currently;
+    var havaDurumu = weatherData.temp != null ? weatherData.temp.toStringAsFixed(0) + "\u00B0C" : "Yükleniyor";
     print(havaDurumu);
-    // Kullanıcının kıyafetlerini çek
-    Future<void> getKiyafetler(String userUID) async {
-      User? user = FirebaseAuth.instance.currentUser;
-      print("User UID: ${user?.uid}");
-      var ustgiyim = await FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
-    }
+
+    getKiyafetler();
   }
 
   Widget buildCard(String title1, String imageUrl1, String title2, String imageUrl2, String title3, String imageUrl3, String title4, String imageUrl4,

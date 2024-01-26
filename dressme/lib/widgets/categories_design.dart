@@ -19,6 +19,18 @@ class InfoDesignWidget extends StatefulWidget {
 class _InfoDesignWidgetState extends State<InfoDesignWidget> {
   deleteMenu(String categoryID) {
     FirebaseFirestore.instance.collection("users").doc(sharedPreferences!.getString("uid")).collection("categories").doc(categoryID).delete();
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(sharedPreferences!.getString("uid"))
+        .collection("categories")
+        .doc(categoryID)
+        .collection("items")
+        .get()
+        .then((querySnapshot) {
+      querySnapshot.docs.forEach((document) {
+        document.reference.delete();
+      });
+    });
     Fluttertoast.showToast(msg: "Kategori Silindi");
   }
 
