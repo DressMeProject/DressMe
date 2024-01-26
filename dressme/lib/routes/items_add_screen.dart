@@ -640,37 +640,6 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
     }).then((value) {
       final itemsRef = FirebaseFirestore.instance.collection("items");
 
-      //     return itemsRef.doc(uniqueIdName).set({
-      //       "itemID": uniqueIdName,
-      //       "categoryID": widget.model!.categoryID,
-      //       "userUID": sharedPreferences!.getString("uid"),
-      //       "userName": sharedPreferences!.getString("name"),
-      //       "shortInfo": shortInfoController.text.toString(),
-      //       "colorRGB": rgbValues,
-      //       "season": season,
-      //       "style": style,
-      //       "title": titleController.text.toString(),
-      //       "publishedDate": DateTime.now(),
-      //       "status": "awalible",
-      //       "thumbnailUrl": downloadUrl,
-      //     });
-      //   }).then((_) {
-      //     // Navigator.push(
-      //     //   context,
-      //     //   MaterialPageRoute(
-      //     //     builder: (context) => ItemsScreen(model: widget.model),
-      //     //   ),
-      //     // )
-      //     .then((_) {
-      //       clearMenuUploadForm();
-      //       setState(() {
-      //         uniqueIdName = DateTime.now().millisecondsSinceEpoch.toString();
-      //         uploading = false;
-      //       });
-      //     });
-      //   });
-      // }
-
       return itemsRef.doc(uniqueIdName).set({
         "itemID": uniqueIdName,
         "categoryID": widget.model!.categoryID,

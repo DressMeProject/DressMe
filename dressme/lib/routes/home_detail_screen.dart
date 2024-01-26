@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dressme/global/global.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -101,56 +100,11 @@ class _HomeDetailScreenState extends State<HomeDetailScreen> {
       User? user = FirebaseAuth.instance.currentUser;
       print("User UID: ${user?.uid}");
       var ustgiyim = await FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
-
-      // var ustgiyim = await _firestore.collection('users').doc(uid).collection('categories').where('clothes', isEqualTo: 'Üst Giyim').get();
-      // ustgiyim.docs.forEach((doc) {
-      //   var data = doc.data();
-      //   print(data);
-      // });
-
-      // try {
-      //   // Burada kiyafetler listesini kullanabilirsiniz.
-      //   // Örneğin:
-      //   kiyafetler.docs.forEach((doc) {
-      //     var kiyafetData = doc.data();
-      //     print(kiyafetData);
-      //   });
-      // } catch (e) {
-      //   print('Kıyafetleri getirme hatası: $e');
-      // }
     }
-
-    // // Uygun kıyafetleri filtrele
-    // var uygunKiyafetler = kiyafetler.docs.where((doc) {
-    //   var mevsimler = doc['mevsim'];
-    //   var renk = doc['renk'];
-    //   return _mevsimeUygunMu(havaDurumu, mevsimler) && _rengeUygunMu(renk);
-    // }).toList();
-
-    // // Rastgele bir kombin oluştur
-    // if (uygunKiyafetler.isNotEmpty) {
-    //   var rastgeleKombin = uygunKiyafetler[Random().nextInt(uygunKiyafetler.length)];
-    //   print('Önerilen kombin: ${rastgeleKombin['urunAdi']}');
-    // } else {
-    //   print('Uygun bir kombin bulunamadı.');
-    // }
-  }
-
-  bool _mevsimeUygunMu(String havaDurumu, List<String> mevsimler) {
-    // Hava durumuna göre mevsime uygun kıyafetleri filtrele
-    return mevsimler.contains(havaDurumu);
-  }
-
-  bool _rengeUygunMu(String renk) {
-    // Renk uyumuna göre kıyafetleri filtrele
-    // Bu örnekte RGB renk değerlerini kullanarak renk uyumunu kontrol ediyoruz
-    var rgb = renk.split(',').map((e) => int.parse(e)).toList();
-    var uyumlu = rgb[0] > 150 && rgb[1] > 150 && rgb[2] > 150; // Beyaz renklerle uyumlu olup olmadığını kontrol ediyoruz
-    return uyumlu;
   }
 
   Widget buildCard(String title1, String imageUrl1, String title2, String imageUrl2, String title3, String imageUrl3, String title4, String imageUrl4,
-      String title5, String imageUrl5, String title6, String imageUrl6) {
+      String title5, String imageUrl5) {
     return Column(
       children: [
         Row(
@@ -173,7 +127,6 @@ class _HomeDetailScreenState extends State<HomeDetailScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             _buildCardItem(title5, imageUrl5),
-            _buildCardItem(title6, imageUrl6),
           ],
         ),
         SizedBox(height: 20),
@@ -328,18 +281,17 @@ class _HomeDetailScreenState extends State<HomeDetailScreen> {
             Column(
               children: [
                 buildCard(
-                    "Üst Giyim",
-                    "assets/images/aksesuar.png",
-                    "Alt Giyim",
-                    "assets/images/altgiyim.png",
-                    "Dış Giyim",
-                    "assets/images/disgiyim.png",
-                    "Elbise",
-                    "assets/images/elbise.png",
-                    "Ayakkabı",
-                    "assets/images/ayakkabi.png",
-                    "Aksesuar",
-                    "assets/images/aksesuar.png"),
+                  "Üst Giyim",
+                  "assets/images/aksesuar.png",
+                  "Alt Giyim",
+                  "assets/images/altgiyim.png",
+                  "Dış Giyim",
+                  "assets/images/disgiyim.png",
+                  "Ayakkabı",
+                  "assets/images/ayakkabi.png",
+                  "Aksesuar",
+                  "assets/images/aksesuar.png",
+                ),
               ],
             ),
           ],

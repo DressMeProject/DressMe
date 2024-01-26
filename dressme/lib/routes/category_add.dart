@@ -48,13 +48,6 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
         height: 24,
       );
     }
-    if (metin == 'Elbise') {
-      iconWidget = Image.asset(
-        'assets/images/elbise.png',
-        width: 24,
-        height: 24,
-      );
-    }
     if (metin == 'Ayakkabı') {
       iconWidget = Image.asset(
         'assets/images/ayakkabi.png',
@@ -342,7 +335,6 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
                   GiyimButton('Üst Giyim', Icons.image, () {}),
                   GiyimButton('Alt Giyim', Icons.image, () {}),
                   GiyimButton('Dış Giyim', Icons.image, () {}),
-                  GiyimButton('Elbise', Icons.image, () {}),
                   GiyimButton('Ayakkabı', Icons.image, () {}),
                   GiyimButton('Aksesuar', Icons.image, () {}),
                 ],
