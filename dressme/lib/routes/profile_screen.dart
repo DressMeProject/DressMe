@@ -116,6 +116,7 @@ class ProfilePage extends StatelessWidget {
                               text: sharedPreferences!.getString("name")!,
                             ),
                             enabled: false,
+                            style: TextStyle(fontFamily: "Lobster"), // Set fontFamily
                           ),
                           TextField(
                             decoration: InputDecoration(
@@ -124,6 +125,7 @@ class ProfilePage extends StatelessWidget {
                             ),
                             controller: TextEditingController(text: data["phone"] ?? ''),
                             enabled: false,
+                            style: TextStyle(fontFamily: "Lobster"), // Set fontFamily
                           ),
                           TextField(
                             decoration: InputDecoration(
@@ -132,6 +134,7 @@ class ProfilePage extends StatelessWidget {
                             ),
                             controller: TextEditingController(text: sharedPreferences!.getString("email")!),
                             enabled: false,
+                            style: TextStyle(fontFamily: "Lobster"), // Set fontFamily
                           ),
                         ],
                       ),
