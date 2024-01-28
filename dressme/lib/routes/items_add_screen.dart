@@ -71,7 +71,10 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
           ),
         ),
         SizedBox(height: 3),
-        Text(metin),
+        Text(
+          metin,
+          style: TextStyle(fontFamily: "Lobster"),
+        ),
       ],
     );
   }
@@ -128,7 +131,10 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
           ),
         ),
         SizedBox(height: 3),
-        Text(metin),
+        Text(
+          metin,
+          style: TextStyle(fontFamily: "Lobster"),
+        ),
       ],
     );
   }
@@ -198,7 +204,7 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
                   child: Center(
                     child: Text(
                       "Ekle",
-                      style: TextStyle(color: Colors.white, fontSize: 20),
+                      style: TextStyle(color: Colors.white, fontSize: 20, fontFamily: "Lobster"),
                     ),
                   ),
                 ),
@@ -217,27 +223,27 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
         return SimpleDialog(
           title: const Text(
             "Ürün Resmi",
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontFamily: "Valera"),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontFamily: "Lobster"),
           ),
           children: [
             SimpleDialogOption(
               child: const Text(
                 "Fotoğraf Çek",
-                style: TextStyle(fontSize: 18, color: Colors.grey),
+                style: TextStyle(fontSize: 18, color: Colors.grey, fontFamily: "Lobster"),
               ),
               onPressed: captureImageWithCamera,
             ),
             SimpleDialogOption(
               child: const Text(
                 "Galeriden Seç",
-                style: TextStyle(fontSize: 18, color: Colors.grey),
+                style: TextStyle(fontSize: 18, color: Colors.grey, fontFamily: "Lobster"),
               ),
               onPressed: pickImageFromGallery,
             ),
             SimpleDialogOption(
               child: const Text(
                 "Vazgeç",
-                style: TextStyle(fontSize: 18, color: Colors.red),
+                style: TextStyle(fontSize: 18, color: Colors.red, fontFamily: "Lobster"),
               ),
               onPressed: () => Navigator.pop(context),
             ),
@@ -400,7 +406,7 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
-                fontFamily: "Varela",
+                fontFamily: "Lobster",
                 letterSpacing: 2,
               ),
             ),
@@ -431,7 +437,7 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
           ),
           ListTile(
             leading: const Icon(
-              Icons.perm_device_information,
+              Icons.color_lens,
               color: Color(0xFFFFBED7),
             ),
             title: SingleChildScrollView(
@@ -447,7 +453,7 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
           ),
           ListTile(
             leading: const Icon(
-              Icons.perm_device_information,
+              Icons.label,
               color: Color(0xFFFFBED7),
             ),
             title: Container(
@@ -457,7 +463,7 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
                 controller: titleController,
                 decoration: const InputDecoration(
                   hintText: "Parça Adı",
-                  hintStyle: TextStyle(color: Colors.black54),
+                  hintStyle: TextStyle(color: Colors.black54, fontFamily: "Lobster"),
                   border: InputBorder.none,
                 ),
               ),
@@ -469,13 +475,13 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
           ),
           ListTile(
             leading: const Icon(
-              Icons.title,
+              Icons.description,
               color: Color(0xFFFFBED7),
             ),
             title: Container(
               width: 250,
               child: TextField(
-                style: const TextStyle(fontSize: 18, color: Colors.black),
+                style: const TextStyle(fontSize: 18, color: Colors.black, fontFamily: "Lobster"),
                 controller: shortInfoController,
                 decoration: const InputDecoration(
                   hintText: "Parça Açıklaması",
@@ -491,7 +497,7 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
           ),
           ListTile(
             leading: Icon(
-              Icons.perm_device_information,
+              Icons.wb_sunny,
               color: Color(0xFFFFBED7),
             ),
             title: Row(
@@ -510,7 +516,7 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
           ),
           ListTile(
             leading: Icon(
-              Icons.perm_device_information,
+              Icons.shopping_bag,
               color: Color(0xFFFFBED7),
             ),
             title: Row(

@@ -101,7 +101,7 @@ class _KategoriScreenState extends State<KategoriScreen> {
             child: Center(
               child: Text(
                 "Kategori Ekle",
-                style: TextStyle(color: Colors.white, fontSize: 18),
+                style: TextStyle(color: Colors.white, fontSize: 18, fontFamily: "Lobster"),
               ),
             ),
           ),

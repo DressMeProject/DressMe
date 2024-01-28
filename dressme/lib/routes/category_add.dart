@@ -157,7 +157,7 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
                     child: Center(
                       child: Text(
                         "Ekle",
-                        style: TextStyle(color: Colors.white, fontSize: 18),
+                        style: TextStyle(color: Colors.white, fontSize: 18, fontFamily: "Lobster"),
                       ),
                     ),
                   ),
@@ -175,27 +175,27 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
         return SimpleDialog(
           title: const Text(
             "Kategori Resmi",
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontFamily: "Valera"),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontFamily: "Lobster"),
           ),
           children: [
             SimpleDialogOption(
               child: const Text(
                 "Fotoğraf Çek",
-                style: TextStyle(fontSize: 18, color: Colors.grey),
+                style: TextStyle(fontSize: 18, color: Colors.grey, fontFamily: "Lobster"),
               ),
               onPressed: captureImageWithCamera,
             ),
             SimpleDialogOption(
               child: const Text(
                 "Galeriden Seç",
-                style: TextStyle(fontSize: 18, color: Colors.grey),
+                style: TextStyle(fontSize: 18, color: Colors.grey, fontFamily: "Lobster"),
               ),
               onPressed: pickImageFromGallery,
             ),
             SimpleDialogOption(
               child: const Text(
                 "Vazgeç",
-                style: TextStyle(fontSize: 18, color: Colors.red),
+                style: TextStyle(fontSize: 18, color: Colors.red, fontFamily: "Lobster"),
               ),
               onPressed: () => Navigator.pop(context),
             ),
@@ -272,7 +272,7 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
-                fontFamily: "Varela",
+                fontFamily: "Lobster",
                 letterSpacing: 2,
               ),
             ),
@@ -303,8 +303,8 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
           ),
           ListTile(
             leading: const Icon(
-              Icons.perm_device_information,
-              color: Color.fromARGB(255, 89, 86, 253),
+              Icons.category,
+              color: Color(0xFFFFBED7),
             ),
             title: Container(
               width: 250,
@@ -313,7 +313,7 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
                 controller: titleController,
                 decoration: const InputDecoration(
                   hintText: "Kategori Adı",
-                  hintStyle: TextStyle(color: Colors.black54),
+                  hintStyle: TextStyle(color: Colors.black54, fontFamily: "Lobster"),
                   border: InputBorder.none,
                 ),
               ),
@@ -325,7 +325,7 @@ class _KategoriEkleScreenState extends State<KategoriEkleScreen> {
           ),
           ListTile(
             leading: const Icon(
-              Icons.perm_device_information,
+              Icons.shopping_bag,
               color: Color(0xFFFFBED7),
             ),
             title: SingleChildScrollView(

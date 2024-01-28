@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../services/weather.dart';
@@ -514,23 +515,25 @@ class _HomeDetailScreenState extends State<HomeDetailScreen> {
         }
       }
     });
-    var kiyafetWidget = buildCard(
-      "$ustGiyimTitle",
-      "$ustGiyimUrl",
-      "$altGiyimTitle",
-      "$altGiyimUrl",
-      "$disGiyimTitle",
-      "$disGiyimUrl",
-      "$ayakkabiTitle",
-      "$ayakkabiUrl",
-      "$aksesuarTitle",
-      "$aksesuarUrl",
-    );
+    if (_isMounted) {
+      var kiyafetWidget = buildCard(
+        "$ustGiyimTitle",
+        "$ustGiyimUrl",
+        "$altGiyimTitle",
+        "$altGiyimUrl",
+        "$disGiyimTitle",
+        "$disGiyimUrl",
+        "$ayakkabiTitle",
+        "$ayakkabiUrl",
+        "$aksesuarTitle",
+        "$aksesuarUrl",
+      );
 
-    setState(() {
-      isOutfitLoaded = true;
-      kiyafetWidgets.add(kiyafetWidget);
-    });
+      setState(() {
+        isOutfitLoaded = true;
+        kiyafetWidgets.add(kiyafetWidget);
+      });
+    }
   }
 
   Widget buildCard(
@@ -693,7 +696,7 @@ class _HomeDetailScreenState extends State<HomeDetailScreen> {
                   children: <Widget>[
                     Text(
                       '${weatherData.city ?? "Yükleniyor"} , ${weatherData.country ?? "Yükleniyor"}',
-                      style: TextStyle(fontSize: 18.0),
+                      style: TextStyle(fontSize: 18.0, fontFamily: "Lobster"),
                     ),
                     weatherData.icon != null
                         ? Image.network(
@@ -707,11 +710,11 @@ class _HomeDetailScreenState extends State<HomeDetailScreen> {
                       children: <Widget>[
                         Text(
                           weatherData.temp != null ? weatherData.temp.toStringAsFixed(0) + "\u00B0C" : "Yükleniyor",
-                          style: TextStyle(fontSize: 17.0),
+                          style: TextStyle(fontSize: 17.0, fontFamily: "Lobster"),
                         ),
                         Text(
                           weatherData.description != null ? weatherData.description.toString() : "Yükleniyor",
-                          style: TextStyle(fontSize: 13.0),
+                          style: TextStyle(fontSize: 13.0, fontFamily: "Lobster"),
                         ),
                       ],
                     ),
@@ -723,7 +726,7 @@ class _HomeDetailScreenState extends State<HomeDetailScreen> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   'Kombin Önerisi',
@@ -733,18 +736,16 @@ class _HomeDetailScreenState extends State<HomeDetailScreen> {
                     fontFamily: "Lobster",
                   ),
                 ),
-                isOutfitLoaded
-                    ? IconButton(
-                        icon: Icon(Icons.refresh),
-                        onPressed: () {
-                          setState(() {
-                            isOutfitLoaded = false;
-                            kiyafetWidgets.clear();
-                          });
-                          getKiyafetler();
-                        },
-                      )
-                    : Container(),
+                IconButton(
+                  icon: Icon(Icons.refresh),
+                  onPressed: () {
+                    setState(() {
+                      isOutfitLoaded = false;
+                      kiyafetWidgets.clear();
+                    });
+                    getKiyafetler();
+                  },
+                )
               ],
             ),
           ),
@@ -757,9 +758,13 @@ class _HomeDetailScreenState extends State<HomeDetailScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      CircularProgressIndicator(), // Loading indicator
+                      Image.asset(
+                        'assets/images/loading.gif',
+                        width: 300,
+                        height: 300,
+                      ),
                       SizedBox(height: 10),
-                      Text('Kombin yükleniyor...'), // Loading message
+                      Text('Sizin için en uygun kombini hazırlıyoruz...', style: TextStyle(fontSize: 15, fontFamily: "Lobster")),
                     ],
                   ),
           ),

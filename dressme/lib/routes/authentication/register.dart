@@ -203,7 +203,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     isObsecre: true,
                   ),
                   CustomTextField(
-                    data: Icons.person,
+                    data: Icons.lock,
                     controller: confirmPasswordController,
                     hintText: "Şifre Tekrarı",
                     isObsecre: true,

@@ -138,6 +138,8 @@ class _MyHomePageState extends State<MyHomePage> {
             selectedItemColor: Colors.black,
             unselectedItemColor: Colors.white,
             onTap: _onItemTapped,
+            selectedLabelStyle: TextStyle(fontFamily: "Lobster"),
+            unselectedLabelStyle: TextStyle(fontFamily: "Lobster"),
           ),
         ),
       ),

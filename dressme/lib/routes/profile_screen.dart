@@ -96,7 +96,7 @@ class ProfilePage extends StatelessWidget {
                       ),
                       Text(
                         sharedPreferences!.getString("name")!,
-                        style: TextStyle(color: Colors.black, fontSize: 24, fontFamily: "Train"),
+                        style: TextStyle(color: Colors.black, fontSize: 24, fontFamily: "Lobster"),
                       ),
                     ],
                   ),
@@ -189,7 +189,7 @@ class ProfilePage extends StatelessWidget {
                       child: Center(
                         child: Text(
                           "Çıkış Yap",
-                          style: TextStyle(color: Colors.white, fontSize: 18),
+                          style: TextStyle(color: Colors.white, fontSize: 18, fontFamily: "Lobster"),
                         ),
                       ),
                     ),

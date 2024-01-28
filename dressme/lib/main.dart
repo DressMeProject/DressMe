@@ -16,8 +16,11 @@ void main() async {
   sharedPreferences = await SharedPreferences.getInstance();
 
   runApp(
-    ChangeNotifierProvider<WeatherData>(
-      create: (context) => WeatherData(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => WeatherData()),
+        //ChangeNotifierProvider(create: (_) => KiyafetlerDataProvider()),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: MySplashScreen(),
