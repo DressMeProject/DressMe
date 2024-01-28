@@ -722,13 +722,30 @@ class _HomeDetailScreenState extends State<HomeDetailScreen> {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'Kombin Önerisi',
-              style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-                fontFamily: "Lobster",
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Kombin Önerisi',
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "Lobster",
+                  ),
+                ),
+                isOutfitLoaded
+                    ? IconButton(
+                        icon: Icon(Icons.refresh),
+                        onPressed: () {
+                          setState(() {
+                            isOutfitLoaded = false;
+                            kiyafetWidgets.clear();
+                          });
+                          getKiyafetler();
+                        },
+                      )
+                    : Container(),
+              ],
             ),
           ),
           Expanded(
