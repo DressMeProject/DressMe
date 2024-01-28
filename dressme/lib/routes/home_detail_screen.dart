@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,7 +19,7 @@ class HomeDetailScreen extends StatefulWidget {
 
 class _HomeDetailScreenState extends State<HomeDetailScreen> {
   bool _isMounted = false;
-
+  List<Widget> kiyafetWidgets = [];
   var temp;
   var description;
   var icon;
@@ -27,13 +28,14 @@ class _HomeDetailScreenState extends State<HomeDetailScreen> {
   var windSpeed;
   var city;
   var country;
+  bool isOutfitLoaded = false;
 
   @override
   void initState() {
     super.initState();
     _isMounted = true;
     getWeather();
-    _kombinOlustur();
+    getKiyafetler();
   }
 
   @override
@@ -90,7 +92,6 @@ class _HomeDetailScreenState extends State<HomeDetailScreen> {
     }
   }
 
-// Kullanıcının kıyafetlerini çek
   Future<void> getKiyafetler() async {
     User? user = FirebaseAuth.instance.currentUser;
     List<String> altGiyimKategoriIDs = [];
@@ -99,14 +100,11 @@ class _HomeDetailScreenState extends State<HomeDetailScreen> {
     List<String> ayakkabiKategoriIDs = [];
     List<String> aksesuarKategoriIDs = [];
 
-    // var kiyafet =
-    //     await FirebaseFirestore.instance.collection('users').doc(user!.uid).collection('categories').doc('1706284556778').collection('items').get();
     var kiyafet = await FirebaseFirestore.instance.collection('users').doc(user!.uid).collection('categories').get();
     kiyafet.docs.forEach((DocumentSnapshot document) {
       Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
       String clothes = data['clothes'];
-      print(data);
       if (clothes == "Alt Giyim") {
         altGiyimKategoriIDs.add(document.id);
       }
@@ -123,46 +121,452 @@ class _HomeDetailScreenState extends State<HomeDetailScreen> {
         aksesuarKategoriIDs.add(document.id);
       }
     });
-    print("Alt Giyim Kategorileri ID'leri: $altGiyimKategoriIDs");
-    print("Üst Giyim Kategorileri ID'leri: $ustGiyimKategoriIDs");
-    print("Dış Giyim Kategorileri ID'leri: $disGiyimKategoriIDs");
-    print("Ayakkabı Kategorileri ID'leri: $ayakkabiKategoriIDs");
-    print("Aksesuar Kategorileri ID'leri: $aksesuarKategoriIDs");
-  }
+    // print("Alt Giyim Kategorileri ID'leri: $altGiyimKategoriIDs");
+    // print("Üst Giyim Kategorileri ID'leri: $ustGiyimKategoriIDs");
+    // print("Dış Giyim Kategorileri ID'leri: $disGiyimKategoriIDs");
+    // print("Ayakkabı Kategorileri ID'leri: $ayakkabiKategoriIDs");
+    // print("Aksesuar Kategorileri ID'leri: $aksesuarKategoriIDs");
 
-  void _kombinOlustur() async {
+    //GETALTGİYİM
+    List<Map<String, dynamic>> altGiyimBahar = [];
+    List<Map<String, dynamic>> altGiyimYaz = [];
+    List<Map<String, dynamic>> altGiyimKis = [];
+
+    var altGiyimKategori = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user!.uid)
+        .collection('categories')
+        .where('categoryID', whereIn: altGiyimKategoriIDs)
+        .get();
+    List<QueryDocumentSnapshot<Map<String, dynamic>>> kiyafetDocs = altGiyimKategori.docs;
+    for (var doc in kiyafetDocs) {
+      var items = await doc.reference.collection('items').get();
+      for (var itemDoc in items.docs) {
+        var season = itemDoc.data()['season'];
+        var thumbnailUrl = itemDoc.data()['thumbnailUrl'];
+        var title = itemDoc.data()['title'];
+
+        if (season.contains('İlkbahar') || season.contains('Sonbahar')) {
+          altGiyimBahar.add({
+            'thumbnailUrl': thumbnailUrl,
+            'title': title,
+          });
+        }
+        if (season.contains('Yaz')) {
+          altGiyimYaz.add({
+            'thumbnailUrl': thumbnailUrl,
+            'title': title,
+          });
+        }
+        if (season.contains('Kış')) {
+          altGiyimKis.add({
+            'thumbnailUrl': thumbnailUrl,
+            'title': title,
+          });
+        }
+      }
+    }
+    // print('Bahar: $altGiyimBahar');
+    // print('Yaz: $altGiyimYaz');
+    //print('Kış: $altGiyimKis');
+
+    //GETÜSTGİYİM
+    List<Map<String, dynamic>> ustGiyimBahar = [];
+    List<Map<String, dynamic>> ustGiyimYaz = [];
+    List<Map<String, dynamic>> ustGiyimKis = [];
+
+    var ustGiyimKategori = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user!.uid)
+        .collection('categories')
+        .where('categoryID', whereIn: ustGiyimKategoriIDs)
+        .get();
+    List<QueryDocumentSnapshot<Map<String, dynamic>>> ustkiyafetDocs = ustGiyimKategori.docs;
+    for (var doc in ustkiyafetDocs) {
+      var items = await doc.reference.collection('items').get();
+      for (var itemDoc in items.docs) {
+        var season = itemDoc.data()['season'];
+        var thumbnailUrl = itemDoc.data()['thumbnailUrl'];
+        var title = itemDoc.data()['title'];
+
+        if (season.contains('İlkbahar') || season.contains('Sonbahar')) {
+          ustGiyimBahar.add({
+            'thumbnailUrl': thumbnailUrl,
+            'title': title,
+          });
+        }
+        if (season.contains('Yaz')) {
+          ustGiyimYaz.add({
+            'thumbnailUrl': thumbnailUrl,
+            'title': title,
+          });
+        }
+        if (season.contains('Kış')) {
+          ustGiyimKis.add({
+            'thumbnailUrl': thumbnailUrl,
+            'title': title,
+          });
+        }
+      }
+    }
+    // print('Bahar: $ustGiyimBahar');
+    // print('Yaz: $ustGiyimYaz');
+    // print('Kış: $ustGiyimKis');
+
+    //GETDIŞGİYİM
+    List<Map<String, dynamic>> disGiyimBahar = [];
+    List<Map<String, dynamic>> disGiyimYaz = [];
+    List<Map<String, dynamic>> disGiyimKis = [];
+
+    var disGiyimKategori = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user!.uid)
+        .collection('categories')
+        .where('categoryID', whereIn: disGiyimKategoriIDs)
+        .get();
+    List<QueryDocumentSnapshot<Map<String, dynamic>>> diskiyafetDocs = disGiyimKategori.docs;
+    for (var doc in diskiyafetDocs) {
+      var items = await doc.reference.collection('items').get();
+      for (var itemDoc in items.docs) {
+        var season = itemDoc.data()['season'];
+        var thumbnailUrl = itemDoc.data()['thumbnailUrl'];
+        var title = itemDoc.data()['title'];
+
+        if (season.contains('İlkbahar') || season.contains('Sonbahar')) {
+          disGiyimBahar.add({
+            'thumbnailUrl': thumbnailUrl,
+            'title': title,
+          });
+        }
+        if (season.contains('Yaz')) {
+          disGiyimYaz.add({
+            'thumbnailUrl': thumbnailUrl,
+            'title': title,
+          });
+        }
+        if (season.contains('Kış')) {
+          disGiyimKis.add({
+            'thumbnailUrl': thumbnailUrl,
+            'title': title,
+          });
+        }
+      }
+    }
+    // print('Bahar: $disGiyimBahar');
+    // print('Yaz: $disGiyimYaz');
+    // print('Kış: $disGiyimKis');
+
+    //GETAYAKKABI
+    List<Map<String, dynamic>> ayakkabiBahar = [];
+    List<Map<String, dynamic>> ayakkabiYaz = [];
+    List<Map<String, dynamic>> ayakkabiKis = [];
+
+    var ayakkabiKategori = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user!.uid)
+        .collection('categories')
+        .where('categoryID', whereIn: ayakkabiKategoriIDs)
+        .get();
+    List<QueryDocumentSnapshot<Map<String, dynamic>>> ayakkabiDocs = ayakkabiKategori.docs;
+    for (var doc in ayakkabiDocs) {
+      var items = await doc.reference.collection('items').get();
+      for (var itemDoc in items.docs) {
+        var season = itemDoc.data()['season'];
+        var thumbnailUrl = itemDoc.data()['thumbnailUrl'];
+        var title = itemDoc.data()['title'];
+
+        if (season.contains('İlkbahar') || season.contains('Sonbahar')) {
+          ayakkabiBahar.add({
+            'thumbnailUrl': thumbnailUrl,
+            'title': title,
+          });
+        }
+        if (season.contains('Yaz')) {
+          ayakkabiYaz.add({
+            'thumbnailUrl': thumbnailUrl,
+            'title': title,
+          });
+        }
+        if (season.contains('Kış')) {
+          ayakkabiKis.add({
+            'thumbnailUrl': thumbnailUrl,
+            'title': title,
+          });
+        }
+      }
+    }
+    // print('Bahar: $ayakkabiBahar');
+    // print('Yaz: $ayakkabiYaz');
+    // print('Kış: $ayakkabiKis');
+
+    //GETAKSESUAR
+    List<Map<String, dynamic>> aksesuarBahar = [];
+    List<Map<String, dynamic>> aksesuarYaz = [];
+    List<Map<String, dynamic>> aksesuarKis = [];
+
+    var aksesuarKategori = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user!.uid)
+        .collection('categories')
+        .where('categoryID', whereIn: aksesuarKategoriIDs)
+        .get();
+    List<QueryDocumentSnapshot<Map<String, dynamic>>> aksesuarKategoriDocs = aksesuarKategori.docs;
+    for (var doc in aksesuarKategoriDocs) {
+      var items = await doc.reference.collection('items').get();
+      for (var itemDoc in items.docs) {
+        var season = itemDoc.data()['season'];
+        var thumbnailUrl = itemDoc.data()['thumbnailUrl'];
+        var title = itemDoc.data()['title'];
+
+        if (season.contains('İlkbahar') || season.contains('Sonbahar')) {
+          aksesuarBahar.add({
+            'thumbnailUrl': thumbnailUrl,
+            'title': title,
+          });
+        }
+        if (season.contains('Yaz')) {
+          aksesuarYaz.add({
+            'thumbnailUrl': thumbnailUrl,
+            'title': title,
+          });
+        }
+        if (season.contains('Kış')) {
+          aksesuarKis.add({
+            'thumbnailUrl': thumbnailUrl,
+            'title': title,
+          });
+        }
+      }
+    }
+    // print('Bahar: $aksesuarBahar');
+    // print('Yaz: $aksesuarYaz');
+    // print('Kış: $aksesuarKis');
+
+    String altGiyimTitle = '';
+    String altGiyimUrl = '';
+    String ustGiyimTitle = '';
+    String ustGiyimUrl = '';
+    String disGiyimTitle = '';
+    String disGiyimUrl = '';
+    String ayakkabiTitle = '';
+    String ayakkabiUrl = '';
+    String aksesuarTitle = '';
+    String aksesuarUrl = '';
+    String whiteImage =
+        "https://firebasestorage.googleapis.com/v0/b/dressme-18b1b.appspot.com/o/hints%2F3000-beyaz.jpg?alt=media&token=c6f812ae-d506-453e-9a6e-a32cebb85997";
     var weatherData = context.read<WeatherData>();
-    // Hava durumunu çek
-    var havaDurumu = weatherData.temp != null ? weatherData.temp.toStringAsFixed(0) + "\u00B0C" : "Yükleniyor";
-    print(havaDurumu);
+    await Future.delayed(Duration(seconds: 6)).then((_) {
+      var hava = weatherData.temp;
+      print(hava);
+      if (hava < 10) {
+        print("Hava 10 dan az");
 
-    getKiyafetler();
+        if (ustGiyimKis.length == 0) {
+          ustGiyimUrl = whiteImage;
+          ustGiyimTitle = "Ürün Ekleyiniz";
+        } else {
+          int randomIndex = Random().nextInt(ustGiyimKis.length);
+          Map<String, dynamic> selectedUstGiyim = ustGiyimKis[randomIndex];
+          ustGiyimUrl = selectedUstGiyim['thumbnailUrl'];
+          ustGiyimTitle = selectedUstGiyim['title'];
+        }
+
+        if (altGiyimKis.length == 0) {
+          altGiyimUrl = whiteImage;
+          altGiyimTitle = "Ürün Ekleyiniz";
+        } else {
+          int randomIndex1 = Random().nextInt(altGiyimKis.length);
+          Map<String, dynamic> selectedAltGiyim = altGiyimKis[randomIndex1];
+          altGiyimUrl = selectedAltGiyim['thumbnailUrl'];
+          altGiyimTitle = selectedAltGiyim['title'];
+        }
+
+        if (disGiyimKis.length == 0) {
+          disGiyimUrl = whiteImage;
+          disGiyimTitle = "Ürün Ekleyiniz";
+        } else {
+          int randomIndex2 = Random().nextInt(disGiyimKis.length);
+          Map<String, dynamic> selectedDisGiyim = disGiyimKis[randomIndex2];
+          disGiyimUrl = selectedDisGiyim['thumbnailUrl'];
+          disGiyimTitle = selectedDisGiyim['title'];
+        }
+
+        if (ayakkabiKis.length == 0) {
+          ayakkabiUrl = whiteImage;
+          ayakkabiTitle = "Ürün Ekleyiniz";
+        } else {
+          int randomIndex3 = Random().nextInt(ayakkabiKis.length);
+          Map<String, dynamic> selectedAyakkabi = ayakkabiKis[randomIndex3];
+          ayakkabiUrl = selectedAyakkabi['thumbnailUrl'];
+          ayakkabiTitle = selectedAyakkabi['title'];
+        }
+
+        if (aksesuarKis.length == 0) {
+          aksesuarUrl = whiteImage;
+          aksesuarTitle = "Ürün Ekleyiniz";
+        } else {
+          int randomIndex4 = Random().nextInt(aksesuarKis.length);
+          Map<String, dynamic> selectedAksesuar = aksesuarKis[randomIndex4];
+          aksesuarUrl = selectedAksesuar['thumbnailUrl'];
+          aksesuarTitle = selectedAksesuar['title'];
+        }
+      } else if (hava >= 10 && hava <= 20) {
+        print("Hava 10 ile 20 arasında");
+
+        if (ustGiyimBahar.length == 0) {
+          ustGiyimUrl = whiteImage;
+          ustGiyimTitle = "Ürün Ekleyiniz";
+        } else {
+          int randomIndex = Random().nextInt(ustGiyimBahar.length);
+          Map<String, dynamic> selectedUstGiyim = ustGiyimBahar[randomIndex];
+          ustGiyimUrl = selectedUstGiyim['thumbnailUrl'];
+          ustGiyimTitle = selectedUstGiyim['title'];
+        }
+        if (altGiyimBahar.length == 0) {
+          altGiyimUrl = whiteImage;
+          altGiyimTitle = "Ürün Ekleyiniz";
+        } else {
+          int randomIndex1 = Random().nextInt(altGiyimBahar.length);
+          Map<String, dynamic> selectedAltGiyim = altGiyimBahar[randomIndex1];
+          altGiyimUrl = selectedAltGiyim['thumbnailUrl'];
+          altGiyimTitle = selectedAltGiyim['title'];
+        }
+        if (disGiyimBahar.length == 0) {
+          disGiyimUrl = whiteImage;
+          disGiyimTitle = "Ürün Ekleyiniz";
+        } else {
+          int randomIndex2 = Random().nextInt(disGiyimBahar.length);
+          Map<String, dynamic> selectedDisGiyim = disGiyimBahar[randomIndex2];
+          disGiyimUrl = selectedDisGiyim['thumbnailUrl'];
+          disGiyimTitle = selectedDisGiyim['title'];
+        }
+
+        if (ayakkabiBahar.length == 0) {
+          ayakkabiUrl = whiteImage;
+          ayakkabiTitle = "Ürün Ekleyiniz";
+        } else {
+          int randomIndex3 = Random().nextInt(ayakkabiBahar.length);
+          Map<String, dynamic> selectedAyakkabi = ayakkabiBahar[randomIndex3];
+          ayakkabiUrl = selectedAyakkabi['thumbnailUrl'];
+          ayakkabiTitle = selectedAyakkabi['title'];
+        }
+
+        if (aksesuarBahar.length == 0) {
+          aksesuarUrl = whiteImage;
+          aksesuarTitle = "Ürün Ekleyiniz";
+        } else {
+          int randomIndex4 = Random().nextInt(aksesuarBahar.length);
+          Map<String, dynamic> selectedAksesuar = aksesuarBahar[randomIndex4];
+          aksesuarUrl = selectedAksesuar['thumbnailUrl'];
+          aksesuarTitle = selectedAksesuar['title'];
+        }
+      } else if (hava > 20) {
+        print("Hava 20den fazla");
+
+        if (ustGiyimYaz.length == 0) {
+          ustGiyimUrl = whiteImage;
+          ustGiyimTitle = "Ürün Ekleyiniz";
+        } else {
+          int randomIndex = Random().nextInt(ustGiyimYaz.length);
+          Map<String, dynamic> selectedUstGiyim = ustGiyimYaz[randomIndex];
+          ustGiyimUrl = selectedUstGiyim['thumbnailUrl'];
+          ustGiyimTitle = selectedUstGiyim['title'];
+        }
+
+        if (altGiyimYaz.length == 0) {
+          altGiyimUrl = whiteImage;
+          altGiyimTitle = "Ürün Ekleyiniz";
+        } else {
+          int randomIndex1 = Random().nextInt(altGiyimYaz.length);
+          Map<String, dynamic> selectedAltGiyim = altGiyimYaz[randomIndex1];
+          altGiyimUrl = selectedAltGiyim['thumbnailUrl'];
+          altGiyimTitle = selectedAltGiyim['title'];
+        }
+
+        if (disGiyimYaz.length == 0) {
+          disGiyimUrl = whiteImage;
+          disGiyimTitle = "Ürün Ekleyiniz";
+        } else {
+          int randomIndex2 = Random().nextInt(disGiyimYaz.length);
+          Map<String, dynamic> selectedDisGiyim = disGiyimYaz[randomIndex2];
+          disGiyimUrl = selectedDisGiyim['thumbnailUrl'];
+          disGiyimTitle = selectedDisGiyim['title'];
+        }
+
+        if (ayakkabiYaz.length == 0) {
+          ayakkabiUrl = whiteImage;
+          ayakkabiTitle = "Ürün Ekleyiniz";
+        } else {
+          int randomIndex3 = Random().nextInt(ayakkabiYaz.length);
+          Map<String, dynamic> selectedAyakkabi = ayakkabiYaz[randomIndex3];
+          ayakkabiUrl = selectedAyakkabi['thumbnailUrl'];
+          ayakkabiTitle = selectedAyakkabi['title'];
+        }
+
+        if (aksesuarYaz.length == 0) {
+          aksesuarUrl = whiteImage;
+          aksesuarTitle = "Ürün Ekleyiniz";
+        } else {
+          int randomIndex4 = Random().nextInt(aksesuarYaz.length);
+          Map<String, dynamic> selectedAksesuar = aksesuarYaz[randomIndex4];
+          aksesuarUrl = selectedAksesuar['thumbnailUrl'];
+          aksesuarTitle = selectedAksesuar['title'];
+        }
+      }
+    });
+    var kiyafetWidget = buildCard(
+      "$ustGiyimTitle",
+      "$ustGiyimUrl",
+      "$altGiyimTitle",
+      "$altGiyimUrl",
+      "$disGiyimTitle",
+      "$disGiyimUrl",
+      "$ayakkabiTitle",
+      "$ayakkabiUrl",
+      "$aksesuarTitle",
+      "$aksesuarUrl",
+    );
+
+    setState(() {
+      isOutfitLoaded = true;
+      kiyafetWidgets.add(kiyafetWidget);
+    });
   }
 
-  Widget buildCard(String title1, String imageUrl1, String title2, String imageUrl2, String title3, String imageUrl3, String title4, String imageUrl4,
-      String title5, String imageUrl5) {
+  Widget buildCard(
+    String item1,
+    String imageUrl1,
+    String item2,
+    String imageUrl2,
+    String item3,
+    String imageUrl3,
+    String item4,
+    String imageUrl4,
+    String item5,
+    String imageUrl5,
+  ) {
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildCardItem(title1, imageUrl1),
-            _buildCardItem(title2, imageUrl2),
+            _buildCardItem("Üst Giyim", item1, imageUrl1),
+            _buildCardItem("Alt Giyim", item2, imageUrl2),
           ],
         ),
         SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildCardItem(title3, imageUrl3),
-            _buildCardItem(title4, imageUrl4),
+            _buildCardItem("Dış Giyim", item3, imageUrl3),
+            _buildCardItem("Ayakkabı", item4, imageUrl4),
           ],
         ),
         SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildCardItem(title5, imageUrl5),
+            _buildCardItem("Aksesuar", item5, imageUrl5),
           ],
         ),
         SizedBox(height: 20),
@@ -170,7 +574,7 @@ class _HomeDetailScreenState extends State<HomeDetailScreen> {
     );
   }
 
-  Widget _buildCardItem(String categoryTitle, String imageUrl) {
+  Widget _buildCardItem(String categoryTitle, String itemTitle, String imageUrl) {
     return InkWell(
       onTap: () {},
       splashColor: Color.fromARGB(255, 227, 223, 224),
@@ -194,21 +598,27 @@ class _HomeDetailScreenState extends State<HomeDetailScreen> {
                     ),
                     color: Color.fromARGB(255, 114, 114, 114).withOpacity(0.7),
                   ),
-                  child: Text(
-                    categoryTitle,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: Color.fromARGB(255, 255, 254, 254),
-                      fontSize: 22,
-                      fontFamily: "Lobster",
+                  child: Center(
+                    // Center the text within the container
+                    child: Text(
+                      categoryTitle,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Color.fromARGB(255, 255, 254, 254),
+                        fontSize: 22,
+                        fontFamily: "Lobster",
+                      ),
                     ),
                   ),
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 30), // Değişen kısım: Kartın altındaki metni aşağıya itmek için
+                margin: EdgeInsets.only(top: 30),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(15.0),
+                    topRight: Radius.circular(15.0),
+                  ),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.grey.withOpacity(0.5),
@@ -219,8 +629,11 @@ class _HomeDetailScreenState extends State<HomeDetailScreen> {
                   ],
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15.0),
-                  child: Image.asset(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(15.0),
+                    bottomRight: Radius.circular(15.0),
+                  ),
+                  child: Image.network(
                     imageUrl,
                     fit: BoxFit.cover,
                     width: double.infinity,
@@ -238,13 +651,16 @@ class _HomeDetailScreenState extends State<HomeDetailScreen> {
                     borderRadius: BorderRadius.circular(15.0),
                     color: Color.fromARGB(255, 114, 114, 114).withOpacity(0.7),
                   ),
-                  child: Text(
-                    categoryTitle, // Değişen kısım: üst taraftaki metni tekrar kullanıyoruz
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: Color.fromARGB(255, 255, 254, 254),
-                      fontSize: 22,
-                      fontFamily: "Lobster",
+                  child: Center(
+                    // Center the text within the container
+                    child: Text(
+                      itemTitle,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Color.fromARGB(255, 255, 254, 254),
+                        fontSize: 22,
+                        fontFamily: "Lobster",
+                      ),
                     ),
                   ),
                 ),
@@ -259,79 +675,78 @@ class _HomeDetailScreenState extends State<HomeDetailScreen> {
   @override
   Widget build(BuildContext context) {
     var weatherData = context.watch<WeatherData>();
+
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.only(top: 10),
-              child: SizedBox(
-                height: 100,
-                child: Card(
-                  color: Colors.grey,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: Column(
+        children: [
+          Container(
+            height: 100,
+            child: Card(
+              color: Colors.grey,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      '${weatherData.city ?? "Yükleniyor"} , ${weatherData.country ?? "Yükleniyor"}',
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                    weatherData.icon != null
+                        ? Image.network(
+                            'https://openweathermap.org/img/wn/${weatherData.icon}@2x.png',
+                            width: 75,
+                            height: 75,
+                          )
+                        : Icon(Icons.error),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          '${weatherData.city ?? "Yükleniyor"} , ${weatherData.country ?? "Yükleniyor"}',
-                          style: TextStyle(fontSize: 18.0),
+                          weatherData.temp != null ? weatherData.temp.toStringAsFixed(0) + "\u00B0C" : "Yükleniyor",
+                          style: TextStyle(fontSize: 17.0),
                         ),
-                        weatherData.icon != null
-                            ? Image.network(
-                                'https://openweathermap.org/img/wn/${weatherData.icon}@2x.png',
-                                width: 75,
-                                height: 75,
-                              )
-                            : Icon(Icons.error),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              weatherData.temp != null ? weatherData.temp.toStringAsFixed(0) + "\u00B0C" : "Yükleniyor",
-                              style: TextStyle(fontSize: 17.0),
-                            ),
-                            Text(
-                              weatherData.description != null ? weatherData.description.toString() : "Yükleniyor",
-                              style: TextStyle(fontSize: 13.0),
-                            ),
-                          ],
+                        Text(
+                          weatherData.description != null ? weatherData.description.toString() : "Yükleniyor",
+                          style: TextStyle(fontSize: 13.0),
                         ),
                       ],
                     ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Kombin Önerisi',
+              style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                fontFamily: "Lobster",
+              ),
+            ),
+          ),
+          Expanded(
+            child: isOutfitLoaded
+                ? ListView(
+                    children: kiyafetWidgets,
+                  )
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(), // Loading indicator
+                      SizedBox(height: 10),
+                      Text('Kombin yükleniyor...'), // Loading message
+                    ],
                   ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Kombin Önerisi',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Column(
-              children: [
-                buildCard(
-                  "Üst Giyim",
-                  "assets/images/aksesuar.png",
-                  "Alt Giyim",
-                  "assets/images/altgiyim.png",
-                  "Dış Giyim",
-                  "assets/images/disgiyim.png",
-                  "Ayakkabı",
-                  "assets/images/ayakkabi.png",
-                  "Aksesuar",
-                  "assets/images/aksesuar.png",
-                ),
-              ],
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

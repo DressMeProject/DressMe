@@ -1,5 +1,6 @@
 import 'package:dressme/global/global.dart';
 import 'package:dressme/routes/category_screen.dart';
+import 'package:dressme/routes/hint_screen.dart';
 import 'package:dressme/routes/home_detail_screen.dart';
 import 'package:dressme/routes/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
   static List<Widget> _widgetOptions = <Widget>[
     HomeDetailScreen(),
     KategoriScreen(),
-    Text('İpucu'),
+    HintListScreen(),
   ];
 
   void _onItemTapped(int index) {
