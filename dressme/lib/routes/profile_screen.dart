@@ -7,6 +7,10 @@ import 'package:flutter/material.dart';
 class ProfilePage extends StatelessWidget {
   final String userId = FirebaseAuth.instance.currentUser!.uid;
 
+  TextEditingController _currentPasswordController = TextEditingController();
+  TextEditingController _newPasswordController = TextEditingController();
+  TextEditingController _confirmPasswordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     CollectionReference users = FirebaseFirestore.instance.collection('users');
@@ -142,6 +146,34 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 20),
+                InkWell(
+                  onTap: () {
+                    _showPasswordChangeDialog(context);
+                  },
+                  child: Container(
+                    width: 380,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Color.fromARGB(255, 207, 70, 241),
+                          Color.fromARGB(255, 72, 70, 228),
+                        ],
+                        begin: FractionalOffset(0.0, 0.0),
+                        end: FractionalOffset(1.0, 0.0),
+                        stops: [0.0, 1.0],
+                        tileMode: TileMode.clamp,
+                      ),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    height: 45,
+                    child: Center(
+                      child: Text(
+                        "Şifre Değiştir",
+                        style: TextStyle(color: Colors.white, fontSize: 18, fontFamily: "Lobster"),
+                      ),
+                    ),
+                  ),
+                ),
                 Container(
                   width: double.infinity,
                   padding: EdgeInsets.all(16.0),
@@ -239,5 +271,119 @@ class ProfilePage extends StatelessWidget {
         );
       },
     );
+  }
+
+  void _showPasswordChangeDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Şifre Değiştir'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: _currentPasswordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Eski Şifre',
+                ),
+              ),
+              TextField(
+                controller: _newPasswordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Yeni Şifre',
+                ),
+              ),
+              TextField(
+                controller: _confirmPasswordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Yeni Şifre Onayı',
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('İptal'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _currentPasswordController.clear();
+                _newPasswordController.clear();
+                _confirmPasswordController.clear();
+              },
+            ),
+            TextButton(
+              child: Text('Kaydet'),
+              onPressed: () {
+                _changePassword(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _changePassword(BuildContext context) async {
+    String currentPassword = _currentPasswordController.text;
+    var user = FirebaseAuth.instance.currentUser;
+
+    try {
+      var credential = EmailAuthProvider.credential(email: user!.email!, password: currentPassword);
+      await user.reauthenticateWithCredential(credential);
+
+      String newPassword = _newPasswordController.text;
+      await user.updatePassword(newPassword);
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Başarılı'),
+            content: Text('Şifreniz başarıyla değiştirildi.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                  _currentPasswordController.clear();
+                  _newPasswordController.clear();
+                  _confirmPasswordController.clear();
+                },
+                child: Text('Tamam'),
+              ),
+            ],
+          );
+        },
+      );
+    } catch (error) {
+      String errorMessage;
+      if (error is FirebaseAuthException && error.code == 'wrong-password') {
+        errorMessage = 'Eski şifre yanlış, lütfen kontrol edin.';
+      } else {
+        errorMessage = 'Şifre değiştirme başarısız.';
+      }
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Hata'),
+            content: Text(errorMessage),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Kapat'),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 }

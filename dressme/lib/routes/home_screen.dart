@@ -50,6 +50,14 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
+  String _getFirstName(String fullName) {
+    List<String> nameParts = fullName.split(" ");
+
+    String firstName = nameParts.isNotEmpty ? nameParts.first : "";
+
+    return firstName;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,11 +82,11 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         actions: <Widget>[
           Padding(
-            padding: EdgeInsets.only(right: 20.0),
+            padding: EdgeInsets.only(right: 10.0),
             child: GestureDetector(
               onTap: () {},
               child: Text(
-                'Hoşgeldin ' + sharedPreferences!.getString("name")!,
+                'Hoşgeldin ' + _getFirstName(sharedPreferences!.getString("name")!),
                 style: TextStyle(fontSize: 17, fontFamily: "Lobster", color: Colors.white),
               ),
             ),

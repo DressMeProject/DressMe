@@ -6,7 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
-import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../services/weather.dart';
@@ -355,10 +354,10 @@ class _HomeDetailScreenState extends State<HomeDetailScreen> {
     String aksesuarUrl = '';
     String whiteImage =
         "https://firebasestorage.googleapis.com/v0/b/dressme-18b1b.appspot.com/o/hints%2F3000-beyaz.jpg?alt=media&token=c6f812ae-d506-453e-9a6e-a32cebb85997";
+
     var weatherData = context.read<WeatherData>();
     await Future.delayed(Duration(seconds: 6)).then((_) {
       var hava = weatherData.temp;
-      print(hava);
       if (hava < 10) {
         print("Hava 10 dan az");
 
