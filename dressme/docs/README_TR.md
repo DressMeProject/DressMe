@@ -18,7 +18,7 @@ Uygulama verilerini depolamak ve senkronize etmek için kullanılan Firebase'in 
 Firebase bulut depolama hizmetini kullanarak dosyaları depolamak için kullanıldı.
 - __Firebase App Check__ : Bu yazılım, uygulamanın güvenliğini artırmak için kullanıldı. Otomatik olarak cihazları doğrular ve güvenilir kabul eder.
 - __Lottie__ : 
-It was used to add animations to Flutter applications.
+Flutter uygulamalarına animasyon eklemek için kullanıldı.
 - __Image Picker__ : 
 Flutter uygulamalarına animasyonlar eklemek için kullanıldı.
 - __Flutter Staggered Grid View__ : 
