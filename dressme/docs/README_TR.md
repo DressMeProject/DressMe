@@ -1,7 +1,7 @@
 
 ﻿<div align="center">
 # DressMe
-| [İnglizce](/README.md) | [Türkçe](./README_TR.md) |
+| [İngilizce](/README.md) | [Türkçe](./README_TR.md) |
 </div>
 
 DressMe, kullanıcıların giysilerini uygun kombinler oluşturmalarına yardımcı olmak için tasarlanmış bir mobil uygulamadır. Uygulama, kullanıcıların dolaplarındaki giysi öğelerinin renk ve desen bilgilerini fotoğraflayarak analiz eder ve hava koşullarına göre kişiselleştirilmiş kıyafet önerileri sunar. Ayrıca, kullanıcıların dolaplarına eklemeleri gereken öğeleri 'eksik parçalar' olarak kategorize eder ve öneriler sunar.
