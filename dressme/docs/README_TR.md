@@ -37,7 +37,7 @@ Flutter uygulamalarında durum yönetimi ve veri akışı kontrolü için kullan
 - __Geocoding__ : 
 Adres ve konum bilgilerini almak ve işlemek için kullanıldı.
 
-## Screens
+## Ekranlar
 
 <div align="center">
   <table>
