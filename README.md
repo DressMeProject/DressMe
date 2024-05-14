@@ -1,4 +1,9 @@
-# Dressme
+
+﻿<div align="center">
+# DressMe
+| [English](README.md) | [Turkish](./dressme/docs/README_TR.md) |
+</div>
+
 DressMe is a mobile application designed to assist users in creating clothing combinations. The app analyzes the color and pattern information of clothing items in users' wardrobes by capturing photos and provides personalized outfit suggestions based on the weather conditions. Additionally, it categorizes items that users need to add to their wardrobes as 'missing pieces' and offers recommendations.
 
 On the Clothing Tips page, users will find informative content on how to better organize their clothes, what to consider when buying new clothes, the current season's trend pieces, and tips for dressing better. This way, users not only create outfits but also gain general knowledge about clothing.
@@ -19,7 +24,7 @@ It's used to allow users to select an image from their gallery or camera.
 Used for grid view that provides editing options.
 - __Fluttertoast__ : In the application, toast was used to show messages.
 
-- __Font Awesome Flutter__ : Font Awesome was used to use icons in Flutter applications.
+- __Font Awesome Flutter__ : Was used to use icons in Flutter applications.
 - __Palette Generator__ : Creates color palette from images, used to ensure design compatibility.
 - __Permission Handler__ : It was used to manage permissions on Android and iOS.
 - __Geolocator__ : It was used to retrieve and manage the location of the device.
@@ -58,59 +63,59 @@ It was used to retrieve and process address and location information.
         <img src="./dressme/docs/anasayfa2.jpg" width="200"/>
       </td>
       <td style="border: 1px solid #ccc; text-align: center;">
-        <div style="solid #ccc; margin-bottom: 5px; padding: 5px;">Market Screen</div>
+        <div style="solid #ccc; margin-bottom: 5px; padding: 5px;">Cupboard Screen</div>
         <img src="./dressme/docs/dolap.jpg" width="200"/>
       </td>
       </tr>
       <tr>
       <td style="border: 1px solid #ccc; text-align: center;">
-        <div style="solid #ccc; margin-bottom: 5px; padding: 5px;">Search Screen</div>
+        <div style="solid #ccc; margin-bottom: 5px; padding: 5px;">Add New Category</div>
         <img src="./dressme/docs/yenikategoriekle.jpg" width="200"/>
       </td>
       <td style="border: 1px solid #ccc; text-align: center;">
-        <div style="solid #ccc; margin-bottom: 5px; padding: 5px;">Detail Screen</div>
+        <div style="solid #ccc; margin-bottom: 5px; padding: 5px;">Select Category Image</div>
         <img src="./dressme/docs/kategoriresmi.jpg" width="200"/>
       </td>
       <td style="border: 1px solid #ccc; text-align: center;">
-        <div style="solid #ccc; margin-bottom: 5px; padding: 5px;">Profile Screen</div>
+        <div style="solid #ccc; margin-bottom: 5px; padding: 5px;">Tracks Screen</div>
         <img src="./dressme/docs/pantalon.jpg" width="200"/>
       </td>
             </tr>
             <tr>
             <td style="border: 1px solid #ccc; text-align: center;">
-        <div style="solid #ccc; margin-bottom: 5px; padding: 5px;">Edit Name Screen</div>
+        <div style="solid #ccc; margin-bottom: 5px; padding: 5px;">Add New Track</div>
         <img src="./dressme/docs/yeniparcaekle.jpg" width="200"/>
       </td>
       <td style="border: 1px solid #ccc; text-align: center;">
-        <div style="solid #ccc; margin-bottom: 5px; padding: 5px;">Edit Name Screen</div>
-        <img src="./dressme/docs/urunekle.jpg" width="200"/>
+        <div style="solid #ccc; margin-bottom: 5px; padding: 5px;">Select Track Image</div>
+        <img src="./dressme/docs/urunresimekle.jpg" width="200"/>
       </td>
       <td style="border: 1px solid #ccc; text-align: center;">
-        <div style="solid #ccc; margin-bottom: 5px; padding: 5px;">Edit Email Screen</div>
-        <img src="./dressme/docs/urunresimekle.jpg" width="200"/>
+        <div style="solid #ccc; margin-bottom: 5px; padding: 5px;">Select Track Properties</div>
+        <img src="./dressme/docs/urunekle.jpg" width="200"/>
       </td>
       </tr>
       <tr>
       <td style="border: 1px solid #ccc; text-align: center;">
-        <div style="solid #ccc; margin-bottom: 5px; padding: 5px;">Edit Password Screen</div>
+        <div style="solid #ccc; margin-bottom: 5px; padding: 5px;">Tips Screen</div>
         <img src="./dressme/docs/ipucu2.jpg" width="200"/>
       </td>
       <td style="border: 1px solid #ccc; text-align: center;">
-        <div style="solid #ccc; margin-bottom: 5px; padding: 5px;">Location Screen</div>
+        <div style="solid #ccc; margin-bottom: 5px; padding: 5px;">Tips Screen 2</div>
         <img src="./dressme/docs/ipucu.jpg" width="200"/>
       </td>
       <td style="border: 1px solid #ccc; text-align: center;">
-        <div style="solid #ccc; margin-bottom: 5px; padding: 5px;">Delete Account Screen</div>
+        <div style="solid #ccc; margin-bottom: 5px; padding: 5px;">Profil Screen</div>
         <img src="./dressme/docs/profil.jpg" width="200"/>
       </td>
       </tr>
       <tr>
       <td style="border: 1px solid #ccc; text-align: center;">
-        <div style="solid #ccc; margin-bottom: 5px; padding: 5px;">Delete Account Screen</div>
+        <div style="solid #ccc; margin-bottom: 5px; padding: 5px;">Change Password Screen</div>
         <img src="./dressme/docs/sifredegistir.jpg" width="200"/>
       </td>
       <td style="border: 1px solid #ccc; text-align: center;">
-        <div style="solid #ccc; margin-bottom: 5px; padding: 5px;">Delete Account Screen</div>
+        <div style="solid #ccc; margin-bottom: 5px; padding: 5px;">Logout Screen</div>
         <img src="./dressme/docs/cikisyap.jpg" width="200"/>
       </td>
       </tr>      
